@@ -7,7 +7,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bubble Bliss - Vendor Registration</title>
+    <title>PRIME - Vendor Registration</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -19,7 +19,7 @@ session_start();
         <!-- Left Side - Visual Branding -->
         <div class="brand-side">
             <div class="brand-content">
-                <img src="../../Asserts/Prime-Logo_600x.avif" alt="">
+                <img src="../../Asserts/Prime-Logo.png" alt="">
 
                 <div class="bottle-animation">
                     <div class="bottle">
@@ -140,7 +140,7 @@ session_start();
             </form>
 
             <div class="form-footer">
-                Already have an account? <a href="./login.html">Sign In</a>
+                Already have an account? <a href="../src/login.php">Sign In</a>
             </div>
         </div>
     </div>

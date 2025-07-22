@@ -1,8 +1,8 @@
 :root {
-  --primary: #ff6b6b;
+  --primary: #09122C;
   --primary-light: #ff8e8e;
-  --primary-dark: #ff4757;
-  --secondary: #70a1ff;
+  --primary-dark: #596792;
+  --secondary: #11204be0;
   --accent: #ffa502;
   --dark: #2f3542;
   --light: #f1f2f6;
@@ -39,7 +39,7 @@ body {
 /* Brand Side Styles */
 .brand-side {
   width: 40%;
-  background: linear-gradient(135deg, #0A1A2F, #0A1A2Ff0);
+  background: black;
   color: var(--white);
   display: flex;
   justify-content: center;
@@ -56,34 +56,9 @@ body {
   z-index: 2;
 }
 
-.logo-circle {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.1);
-  margin: 0 auto 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 3px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.5s ease;
-}
-
-.logo-circle:hover {
-  transform: scale(1.05);
-  background-color: rgba(255, 255, 255, 0.15);
-}
-
-.logo-icon {
-  font-size: 3rem;
-  margin-bottom: 0.5rem;
-}
-
-.logo-circle h1 {
-  font-family: "Pacifico", cursive;
-  font-weight: normal;
-  font-size: 1.8rem;
+.brand-side img{
+  width: 12rem;
+  margin-bottom: 10px;
 }
 
 /* Bottle Animation */
@@ -98,6 +73,7 @@ body {
 .bottle {
   width: 100px;
   position: relative;
+  animation: gentle-shake 5s ease-in-out infinite;
 }
 
 .bottle-neck {
@@ -129,6 +105,8 @@ body {
     rgba(255, 167, 107, 0.7)
   );
   transition: height 1s ease;
+  border-radius: 0 0 6px 6px;
+  animation: liquid-sway 5s ease-in-out infinite;
 }
 
 .bubbles {
@@ -169,6 +147,33 @@ body {
   border-radius: 0 0 5px 5px;
 }
 
+/* Gentle shake animation */
+@keyframes gentle-shake {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+    20% {
+        transform: rotate(-3deg); /* Slight left tilt */
+    }
+    40% {
+        transform: rotate(3deg);  /* Slight right tilt */
+    }
+    60% {
+        transform: rotate(-2deg); /* Subtle left tilt */
+    }
+    80% {
+        transform: rotate(2deg);  /* Subtle right tilt */
+    }
+}
+
+/* Liquid sway (for realism) */
+@keyframes liquid-sway {
+    0%, 100% { transform: skewX(0deg); }
+    25% { transform: skewX(5deg); }
+    50% { transform: skewX(-5deg); }
+    75% { transform: skewX(3deg); }
+}
+
 .brand-message {
   margin-top: 2rem;
   font-size: 1.2rem;
@@ -182,7 +187,7 @@ body {
   gap: 1rem;
   flex-wrap: wrap;
 }
-
+/*
 .floating-icons i {
   font-size: 1.5rem;
   animation: float 3s ease-in-out infinite;
@@ -194,6 +199,38 @@ body {
     transform: translateY(0);
   }
   50% {
+    transform: translateY(-10px);
+  }
+} */
+
+.floating-icons {
+  display: flex;
+  gap: 15px; /* Spacing between icons */
+}
+
+.floating-icons i {
+  font-size: 1.5rem;
+  animation: float-wave 15s ease-in-out infinite;
+}
+
+/* Different delays for each icon */
+.floating-icons i:nth-child(1) { animation-delay: 0s; }
+.floating-icons i:nth-child(2) { animation-delay: 0.5s; }
+.floating-icons i:nth-child(3) { animation-delay: 1s; }
+.floating-icons i:nth-child(4) { animation-delay: 1.5s; }
+
+/* Wave-like floating effect */
+@keyframes float-wave {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-15px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  75% {
     transform: translateY(-10px);
   }
 }

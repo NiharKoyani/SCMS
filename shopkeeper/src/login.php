@@ -18,7 +18,7 @@ session_start();
         <!-- Left Side - Visual Branding -->
         <div class="brand-side">
             <div class="brand-content">
-                <h1><img src="./Asserts/Prime-Logo_600x.avif" alt=""></h1>
+                <img src="../../Asserts/Prime-Logo.png" alt="">
                 
                 <div class="bottle-animation">
                     <div class="bottle">
