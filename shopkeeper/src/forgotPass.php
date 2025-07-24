@@ -14,10 +14,7 @@
         <!-- Left Side - Visual Branding -->
         <div class="brand-side">
             <div class="brand-content">
-                <div class="logo-circle animate__animated animate__bounceIn">
-                    <span class="logo-icon"><i class="fas fa-glass-cheers"></i></span>
-                    <h1>Bubble Bliss</h1>
-                </div>
+                <img src="../../Asserts/Prime-Logo.png" alt="">
                 
                 <div class="bottle-animation">
                     <div class="bottle">
@@ -73,7 +70,7 @@
                 </form>
                 
                 <div class="back-to-login">
-                    Remembered your password? <a href="login.html">Back to login</a>
+                    Remembered your password? <a href="./login.php">Back to login</a>
                 </div>
             </div>
         </div>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,10 +9,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
-            --primary: #FF6B6B;
-            --primary-light: #FF8E8E;
-            --primary-dark: #FF4757;
-            --secondary: #70A1FF;
+            --primary: #09122C;
+            --primary-light: #ff8e8e;
+            --primary-dark: #596792;
+            --secondary: #11204be0;
             --accent: #FFA502;
             --dark: #2F3542;
             --light: #F1F2F6;
@@ -62,12 +63,15 @@
                 transform: translateX(0) rotate(0deg);
                 opacity: 0;
             }
+
             10% {
                 opacity: 0.3;
             }
+
             90% {
                 opacity: 0.3;
             }
+
             100% {
                 bottom: 100vh;
                 transform: translateX(calc(var(--move-x) * 100px)) rotate(360deg);
@@ -85,7 +89,7 @@
         /* Sidebar */
         .sidebar {
             width: var(--sidebar-width);
-            background: linear-gradient(180deg, var(--primary), var(--primary-dark));
+            background: black;
             color: var(--white);
             padding: 2rem 1.5rem;
             position: fixed;
@@ -225,7 +229,8 @@
             gap: 1.5rem;
         }
 
-        .notification-btn, .profile-btn {
+        .notification-btn,
+        .profile-btn {
             position: relative;
             background: none;
             border: none;
@@ -468,6 +473,7 @@
             position: relative;
             cursor: pointer;
             transition: all 0.3s ease;
+            right: 3rem;
         }
 
         .product-bottle:hover {
@@ -477,7 +483,7 @@
         .bottle-body {
             width: 100%;
             height: 80px;
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.5));
+            background: linear-gradient(to bottom, rgb(101 101 101 / 80%), rgba(255, 255, 255, 0.5));
             border-radius: 5px;
             position: relative;
             overflow: hidden;
@@ -496,7 +502,7 @@
         .bottle-neck {
             width: 30%;
             height: 20px;
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+            background: linear-gradient(to bottom, rgb(0 0 0 / 90%), rgb(0 0 0 / 70%));
             margin: 0 auto;
             border-radius: 3px 3px 0 0;
         }
@@ -522,9 +528,11 @@
                 transform: translateY(0);
                 opacity: 0;
             }
+
             20% {
                 opacity: 1;
             }
+
             100% {
                 transform: translateY(-80px);
                 opacity: 0;
@@ -602,6 +610,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="bubbles-bg">
         <!-- Bubbles will be added dynamically -->
@@ -612,8 +621,7 @@
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
-                    <i class="fas fa-glass-cheers logo-icon"></i>
-                    <span class="logo-text">Bubble Bliss</span>
+                    <img style="width: 14rem;" src="../../Asserts/Prime-Logo.png" alt="">
                 </div>
             </div>
 
@@ -693,7 +701,7 @@
                             <i class="fas fa-dollar-sign"></i>
                         </div>
                     </div>
-                    <div class="widget-value">$12,845</div>
+                    <div class="widget-value">₹ 1,28,450</div>
                     <div class="widget-change change-up">
                         <i class="fas fa-arrow-up"></i>
                         <span>12.5% from last month</span>
@@ -783,35 +791,35 @@
                             <td>#BL-1042</td>
                             <td>Sarah Johnson</td>
                             <td>Today, 10:45 AM</td>
-                            <td>$84.50</td>
+                            <td>₹ 84.50</td>
                             <td><span class="order-status status-completed">Completed</span></td>
                         </tr>
                         <tr>
                             <td>#BL-1041</td>
                             <td>Michael Chen</td>
                             <td>Today, 09:30 AM</td>
-                            <td>$126.75</td>
+                            <td>₹ 126.75</td>
                             <td><span class="order-status status-pending">Pending</span></td>
                         </tr>
                         <tr>
                             <td>#BL-1040</td>
                             <td>Emily Rodriguez</td>
                             <td>Yesterday, 4:15 PM</td>
-                            <td>$58.90</td>
+                            <td>₹ 58.90</td>
                             <td><span class="order-status status-completed">Completed</span></td>
                         </tr>
                         <tr>
                             <td>#BL-1039</td>
                             <td>David Kim</td>
                             <td>Yesterday, 2:30 PM</td>
-                            <td>$215.40</td>
+                            <td>₹ 215.40</td>
                             <td><span class="order-status status-cancelled">Cancelled</span></td>
                         </tr>
                         <tr>
                             <td>#BL-1038</td>
                             <td>Jessica Williams</td>
                             <td>Yesterday, 11:20 AM</td>
-                            <td>$72.30</td>
+                            <td>₹ 72.30</td>
                             <td><span class="order-status status-completed">Completed</span></td>
                         </tr>
                     </tbody>
@@ -863,7 +871,7 @@
             // Toggle sidebar on mobile
             const menuToggle = document.querySelector('.menu-toggle');
             const sidebar = document.querySelector('.sidebar');
-            
+
             menuToggle.addEventListener('click', function() {
                 sidebar.classList.toggle('open');
             });
@@ -871,18 +879,18 @@
             // Animate bottle liquid
             const bottleLiquid = document.querySelector('.bottle-liquid');
             let fillDirection = 1;
-            
+
             function animateLiquid() {
                 const currentHeight = parseFloat(bottleLiquid.style.height || '60%');
                 let newHeight = currentHeight + (fillDirection * 0.5);
-                
+
                 if (newHeight >= 80) fillDirection = -1;
                 if (newHeight <= 40) fillDirection = 1;
-                
+
                 bottleLiquid.style.height = newHeight + '%';
                 requestAnimationFrame(animateLiquid);
             }
-            
+
             animateLiquid();
 
             // Add bubbles periodically
@@ -893,7 +901,7 @@
                 bubble.style.animationDelay = '0s';
                 bubble.style.animationDuration = 2 + Math.random() * 3 + 's';
                 bubbleAnimation.appendChild(bubble);
-                
+
                 // Remove bubble after animation
                 setTimeout(() => {
                     bubble.remove();
@@ -922,7 +930,7 @@
                     bubble.style.width = '6px';
                     bubble.style.height = '6px';
                     bubbleAnimation.appendChild(bubble);
-                    
+
                     // Remove bubble after animation
                     setTimeout(() => {
                         bubble.remove();
@@ -932,4 +940,5 @@
         });
     </script>
 </body>
+
 </html>

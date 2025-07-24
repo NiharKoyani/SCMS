@@ -80,7 +80,7 @@ session_start();
                         <label for="remember">Remember me</label>
                     </div>
                     <div class="forgot-password">
-                        <a href="./forgot.html">Forgot password?</a>
+                        <a href="./forgotPass.php">Forgot password?</a>
                     </div>
                 </div>
                 
@@ -90,7 +90,7 @@ session_start();
                 </button>
                 
                 <div class="register-link">
-                    Don't have an account? <a href="./index.html">Register here</a>
+                    Don't have an account? <a href="./registration.php">Register here</a>
                 </div>
             </form>
         </div>

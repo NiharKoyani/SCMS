@@ -89,7 +89,7 @@ body {
   height: 180px;
   background: rgba(255, 255, 255, 0.3);
   margin: 0 auto;
-  border-radius: 5px;
+  border-radius: 5px 5px 0px 0px;
   position: relative;
   overflow: hidden;
 }
@@ -105,8 +105,6 @@ body {
     rgba(255, 167, 107, 0.7)
   );
   transition: height 1s ease;
-  border-radius: 0 0 6px 6px;
-  animation: liquid-sway 5s ease-in-out infinite;
 }
 
 .bubbles {
@@ -164,14 +162,6 @@ body {
     80% {
         transform: rotate(2deg);  /* Subtle right tilt */
     }
-}
-
-/* Liquid sway (for realism) */
-@keyframes liquid-sway {
-    0%, 100% { transform: skewX(0deg); }
-    25% { transform: skewX(5deg); }
-    50% { transform: skewX(-5deg); }
-    75% { transform: skewX(3deg); }
 }
 
 .brand-message {

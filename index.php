@@ -26,7 +26,7 @@
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background-color: var(--dark);
+            background-color: black;
             color: var(--light);
             overflow-x: hidden;
             min-height: 100vh;
@@ -84,7 +84,7 @@
 
         .logo-icon {
             font-size: 2rem;
-            color: var(--primary);
+            color: white;
             animation: pulse 2s infinite;
         }
 
@@ -97,7 +97,7 @@
             font-family: 'Orbitron', sans-serif;
             font-size: 1.8rem;
             font-weight: 700;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
+            background: white;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }

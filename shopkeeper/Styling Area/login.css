@@ -84,7 +84,7 @@ body {
   height: 180px;
   background: rgba(255, 255, 255, 0.3);
   margin: 0 auto;
-  border-radius: 5px;
+  border-radius: 5px 5px 0px 0px;
   position: relative;
   overflow: hidden;
 }
@@ -100,8 +100,6 @@ body {
     rgba(186, 255, 107, 0.7)
   );
   transition: height 0.5s ease;
-  border-radius: 0 0 6px 6px;
-  animation: liquid-sway 5s ease-in-out infinite;
 }
 
 .bubbles {
@@ -161,14 +159,6 @@ body {
     }
 }
 
-/* Liquid sway (for realism) */
-@keyframes liquid-sway {
-    0%, 100% { transform: skewX(0deg); }
-    25% { transform: skewX(5deg); }
-    50% { transform: skewX(-5deg); }
-    75% { transform: skewX(3deg); }
-}
-
 .brand-message {
   margin-top: 2rem;
   font-size: 1.2rem;
@@ -182,21 +172,6 @@ body {
   gap: 1rem;
   flex-wrap: wrap;
 }
-
-/* .floating-icons i {
-  font-size: 1.5rem;
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-} */
 
 .floating-icons {
   display: flex;
@@ -375,69 +350,6 @@ body {
 .submit-btn:hover i {
   transform: translateX(3px);
 }
-
-/* .social-login {
-            text-align: center;
-            margin: 1.5rem 0;
-            position: relative;
-        } */
-
-/* .social-login::before,
-        .social-login::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            width: 30%;
-            height: 1px;
-            background-color: #e0e0e0;
-        } */
-
-/* .social-login::before {
-            left: 0;
-        }
-
-        .social-login::after {
-            right: 0;
-        } */
-
-/* .social-login p {
-            display: inline-block;
-            background-color: var(--light);
-            padding: 0 1rem;
-            position: relative;
-            z-index: 1;
-            color: #666;
-            font-size: 0.8rem;
-        }
-
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--white);
-            color: var(--dark);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .social-icon:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .social-icon.google { color: #DB4437; }
-        .social-icon.facebook { color: #4267B2; }
-        .social-icon.apple { color: #000000; } */
 
 .register-link {
   text-align: center;

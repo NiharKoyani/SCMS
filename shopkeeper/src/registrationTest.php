@@ -416,7 +416,7 @@
                 </button>
 
                 <div class="login-link">
-                    Already have an account? <a href="#">Log in</a>
+                    Already have an account? <a href="../src/login.php">Log in</a>
                 </div>
             </form>
         </div>
@@ -486,7 +486,7 @@
             const registrationForm = document.querySelector('.registration-form');
             
             registrationForm.addEventListener('submit', function(e) {
-                e.preventDefault();
+                // e.preventDefault();
                 
                 // Validate password match
                 const password = document.getElementById('password').value;
