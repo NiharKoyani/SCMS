@@ -72,7 +72,6 @@ if (isset($_POST['submit'])) {
     }
     // Close statement
     $stmt->close();
-    
 } else if (isset($_POST['login'])) {
 
     // Process login
@@ -96,7 +95,7 @@ if (isset($_POST['submit'])) {
         if (password_verify($password, $hashedPassword)) {
             // Login successful
             $_SESSION['shopkeeper_id'] = $userId;
-            header("Location: ./dashboard.php");
+            header("Location: ./dashboards.php?dashboard");
             exit();
         } else {
             $_SESSION['login_error'] = "Invalid password.";

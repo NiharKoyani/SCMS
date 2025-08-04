@@ -1,5 +1,5 @@
 :root {
-  --primary: #09122C;
+  --primary: #09122c;
   --primary-light: #ff8e8e;
   --primary-dark: #596792;
   --secondary: #11204be0;
@@ -16,7 +16,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
 body {
@@ -51,7 +51,7 @@ body {
   z-index: 2;
 }
 
-.brand-side img{
+.brand-side img {
   width: 12rem;
   margin-bottom: 10px;
 }
@@ -84,7 +84,7 @@ body {
   height: 180px;
   background: rgba(255, 255, 255, 0.3);
   margin: 0 auto;
-  border-radius: 5px 5px 0px 0px;;
+  border-radius: 5px 5px 0px 0px;
   position: relative;
   overflow: hidden;
 }
@@ -94,11 +94,7 @@ body {
   bottom: 0;
   width: 100%;
   height: 30%;
-  background: linear-gradient(
-    to top,
-    rgba(255, 107, 107, 0.7),
-    rgba(255, 167, 107, 0.7)
-  );
+  background: linear-gradient(to top, rgba(255, 107, 107, 0.7), rgba(255, 167, 107, 0.7));
   transition: height 0.5s ease;
 }
 
@@ -142,21 +138,22 @@ body {
 
 /* Gentle shake animation */
 @keyframes gentle-shake {
-    0%, 100% {
-        transform: rotate(0deg);
-    }
-    20% {
-        transform: rotate(-3deg); /* Slight left tilt */
-    }
-    40% {
-        transform: rotate(3deg);  /* Slight right tilt */
-    }
-    60% {
-        transform: rotate(-2deg); /* Subtle left tilt */
-    }
-    80% {
-        transform: rotate(2deg);  /* Subtle right tilt */
-    }
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  20% {
+    transform: rotate(-3deg); /* Slight left tilt */
+  }
+  40% {
+    transform: rotate(3deg); /* Slight right tilt */
+  }
+  60% {
+    transform: rotate(-2deg); /* Subtle left tilt */
+  }
+  80% {
+    transform: rotate(2deg); /* Subtle right tilt */
+  }
 }
 
 .brand-message {
@@ -184,14 +181,23 @@ body {
 }
 
 /* Different delays for each icon */
-.floating-icons i:nth-child(1) { animation-delay: 0s; }
-.floating-icons i:nth-child(2) { animation-delay: 0.5s; }
-.floating-icons i:nth-child(3) { animation-delay: 1s; }
-.floating-icons i:nth-child(4) { animation-delay: 1.5s; }
+.floating-icons i:nth-child(1) {
+  animation-delay: 0s;
+}
+.floating-icons i:nth-child(2) {
+  animation-delay: 0.5s;
+}
+.floating-icons i:nth-child(3) {
+  animation-delay: 1s;
+}
+.floating-icons i:nth-child(4) {
+  animation-delay: 1.5s;
+}
 
 /* Wave-like floating effect */
 @keyframes float-wave {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   25% {
@@ -393,6 +399,9 @@ body {
   .bottle-body {
     width: 70px;
     height: 120px;
+  }
+  .bottle-bottom {
+    width: 70px;
   }
 
   .logo-icon {

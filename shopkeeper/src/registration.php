@@ -67,7 +67,7 @@ session_start();
                     <div class="form-group owner-name">
                         <div class="input-with-icon">
                             <i class="fas fa-user-tie"></i>
-                            <input  type="text" id="ownerName" name="ownerName" required placeholder="Owner Name">
+                            <input type="text" id="ownerName" name="ownerName" required placeholder="Owner Name">
                         </div>
                     </div>
 
@@ -75,20 +75,22 @@ session_start();
                     <div class="form-group mobile">
                         <div class="input-with-icon">
                             <i class="fas fa-mobile-alt"></i>
-                            <input  type="tel" id="mobile" name="mobile" required placeholder="Mobile Number">
+                            <input type="tel" id="mobile" name="mobile" required placeholder="Mobile Number">
                         </div>
                         <span style="color: #ff0000ca; margin-bottom: 0.5rem; font-size: 0.9rem;">
-                            <?php echo isset($_SESSION['registration_error_phoneNumber']) ?  $_SESSION['registration_error_phoneNumber'] : null; unset($_SESSION['registration_error_phoneNumber'])?>
+                            <?php echo isset($_SESSION['registration_error_phoneNumber']) ?  $_SESSION['registration_error_phoneNumber'] : null;
+                            unset($_SESSION['registration_error_phoneNumber']) ?>
                         </span>
                     </div>
 
                     <div class="form-group email">
                         <div class="input-with-icon">
                             <i class="fas fa-envelope"></i>
-                            <input  type="email" id="email" name="email" required placeholder="Email Address">
+                            <input type="email" id="email" name="email" required placeholder="Email Address">
                         </div>
                         <span style="color: #ff0000ca; margin-bottom: 0.5rem; font-size: 0.9rem;">
-                            <?php echo isset($_SESSION['registration_error_email']) ?  $_SESSION['registration_error_email'] : null; unset($_SESSION['registration_error_email̃'])?>
+                            <?php echo isset($_SESSION['registration_error_email']) ?  $_SESSION['registration_error_email'] : null;
+                            unset($_SESSION['registration_error_email̃']) ?>
                         </span>
                     </div>
 
@@ -96,7 +98,7 @@ session_start();
                     <div class="form-group password">
                         <div class="input-with-icon">
                             <i class="fas fa-lock"></i>
-                            <input  type="password" id="password" name="password" required placeholder="Password">
+                            <input type="password" id="password" name="password" required placeholder="Password">
                             <span class="toggle-password" onclick="togglePassword('password')">
                                 <i class="fas fa-eye" style="left: -15px;"></i>
                             </span>
@@ -109,7 +111,7 @@ session_start();
                     <div class="form-group confirm-password">
                         <div class="input-with-icon">
                             <i class="fas fa-lock"></i>
-                            <input  type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm Password">
+                            <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Confirm Password">
                             <span class="toggle-password" onclick="togglePassword('confirmPassword')">
                                 <i class="fas fa-eye" style="left: -15px;"></i>
                             </span>
@@ -121,7 +123,7 @@ session_start();
                     <div class="form-group address">
                         <div class="input-with-icon">
                             <i class="fas fa-map-marker-alt"></i>
-                            <input  type="text" id="shopAddress" name="shopAddress" required placeholder="Shop Address">
+                            <input type="text" id="shopAddress" name="shopAddress" required placeholder="Shop Address">
                         </div>
                     </div>
 

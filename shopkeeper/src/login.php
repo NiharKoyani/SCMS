@@ -4,22 +4,24 @@ session_start();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bubble Bliss - Vendor Login</title>
+    <title>PRIME - Vendor Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../Styling Area/login.css">
 </head>
+
 <body>
     <div class="login-container">
         <!-- Left Side - Visual Branding -->
         <div class="brand-side">
             <div class="brand-content">
                 <img src="../../Asserts/Prime-Logo.png" alt="">
-                
+
                 <div class="bottle-animation">
                     <div class="bottle">
                         <div class="bottle-neck"></div>
@@ -34,7 +36,7 @@ session_start();
                         <div class="bottle-bottom"></div>
                     </div>
                 </div>
-                
+
                 <div class="brand-message">
                     <p>Welcome back to our beverage network</p>
                     <div class="floating-icons">
@@ -46,20 +48,20 @@ session_start();
                 </div>
             </div>
         </div>
-        
+
         <!-- Right Side - Login Form -->
         <div class="form-side">
             <form id="loginForm" action="./Process.php" method="POST" class="compact-form">
                 <h2 class="form-title">Vendor Login</h2>
                 <p class="form-subtitle">Sign in to your account</p>
-                
+
                 <div class="form-group">
                     <div class="input-with-icon">
                         <i class="fas fa-envelope"></i>
                         <input type="email" id="email" name="email" required placeholder="Email Address">
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <div class="input-with-icon">
                         <i class="fas fa-lock"></i>
@@ -71,9 +73,10 @@ session_start();
                 </div>
 
                 <span style="color: #ff0000ca; margin-bottom: 0.5rem; font-size: 0.9rem;">
-                    <?php echo isset($_SESSION['login_error']) ?  $_SESSION['login_error'] : null;  unset($_SESSION['login_error'])?>
+                    <?php echo isset($_SESSION['login_error']) ?  $_SESSION['login_error'] : null;
+                    unset($_SESSION['login_error']) ?>
                 </span>
-                
+
                 <div class="remember-forgot">
                     <div class="remember-me">
                         <input type="checkbox" id="remember" name="remember">
@@ -83,12 +86,12 @@ session_start();
                         <a href="./forgotPass.php">Forgot password?</a>
                     </div>
                 </div>
-                
+
                 <button type="submit" name="login" class="submit-btn">
                     <span>Login</span>
                     <i class="fas fa-long-arrow-alt-right"></i>
                 </button>
-                
+
                 <div class="register-link">
                     Don't have an account? <a href="./registration.php">Register here</a>
                 </div>
@@ -98,4 +101,5 @@ session_start();
 
     <script src="./Js File's/login.js"></script>
 </body>
+
 </html>
