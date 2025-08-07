@@ -9,69 +9,63 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../Styling Area/dashboard.css">
 </head>
+<!-- <style>
+    :root {
+        --primary: #09122c;
+        --primary-light: #ff8e8e;
+        --primary-dark: #596792;
+        --secondary: #11204be0;
+        --accent: #ffa502;
+        --dark: #2f3542;
+        --light: #f3f4f6;
+        --white: #ffffff;
+        --success: #2ed573;
+        --warning: #ffa502;
+        --danger: #ff4757;
+        --sidebar-width: 280px;
+    }
 
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Montserrat", sans-serif;
+    }
+
+    body {
+        background-color: var(--light);
+        color: var(--dark);
+        min-height: 100vh;
+        overflow-x: hidden;
+
+    }
+
+    /* Dashboard Layout */
+    .dashboard {
+        display: flex;
+        min-height: 100vh;
+        transition: all 0.3s ease;
+    }
+
+    /* Main Content */
+    .main-content {
+        flex: 1;
+        margin-left: var(--sidebar-width);
+        padding: 2rem;
+        transition: all 0.3s ease;
+    }
+</style> -->
 <body>
     <div class="bubbles-bg">
         <!-- Bubbles will be added dynamically -->
     </div>
 
-    <!-- <div class="dashboard"> -->
+    <div class="dashboard">
         <!-- Sidebar -->
-        <!-- <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <img style="width: 14rem;" src="../../Asserts/Prime-Logo.png" alt="">
-                </div>
-            </div>
-
-            <ul class="sidebar-menu">
-                <li class="menu-item active">
-                    <a href="#" class="menu-link">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <i class="fas fa-box-open"></i>
-                        <span>Products</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <i class="fas fa-shopping-bag"></i>
-                        <span>Orders</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <i class="fas fa-chart-line"></i>
-                        <span>Analytics</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <i class="fas fa-store"></i>
-                        <span>My Shop</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <i class="fas fa-users"></i>
-                        <span>Customers</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <i class="fas fa-cog"></i>
-                        <span>Settings</span>
-                    </a>
-                </li>
-            </ul>
-        </aside> -->
+        <?php include('./sidebar.php') ?>
 
         <!-- Main Content -->
-        <!-- <main class="main-content"> -->
+        <main class="main-content">
             <!-- Top Navigation -->
             <nav class="top-nav">
                 <div class="nav-left">

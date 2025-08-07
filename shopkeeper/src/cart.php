@@ -186,67 +186,117 @@
             font-weight: 500;
         }
     </style>
+    <style>
+        :root {
+            --primary: #09122c;
+            --primary-light: #ff8e8e;
+            --primary-dark: #596792;
+            --secondary: #11204be0;
+            --accent: #ffa502;
+            --dark: #2f3542;
+            --light: #f3f4f6;
+            --white: #ffffff;
+            --success: #2ed573;
+            --warning: #ffa502;
+            --danger: #ff4757;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Montserrat", sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+
+        }
+
+        /* Dashboard Layout */
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+    </style>
 </head>
 
 <body>
+    <div class="dashboard">
+        <?php include('./sidebar.php'); ?>
+        <main class="main-content">
 
-    <div class="header">
-        <h1>My Purchase Cart</h1>
-        <button class="back-btn" id="backToProducts">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-            Back to Products
-        </button>
+            <div class="header">
+                <h1>My Purchase Cart</h1>
+                <button class="back-btn" id="backToProducts">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    Back to Products
+                </button>
+            </div>
+
+            <!-- Cart Items -->
+            <div class="cart-table" id="cartTable">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Subtotal</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="cartItems">
+                        <!-- Cart items will be inserted here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="order-summary" id="orderSummary">
+                <h3>Order Summary</h3>
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="subtotal">₹0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Shipping</span>
+                    <span id="shipping">₹0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Tax (12%)</span>
+                    <span id="tax">₹0</span>
+                </div>
+                <div class="summary-row summary-total">
+                    <span>Total</span>
+                    <span id="total">₹0</span>
+                </div>
+                <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+            </div>
+
+            <!-- Empty Cart State -->
+            <div class="empty-cart" id="emptyCart" style="display: none;">
+                <h3>Your Cart is Empty</h3>
+                <p>You haven't added any products to your purchase cart yet.</p>
+                <button class="shop-btn" id="shopBtn">Browse Products</button>
+            </div>
+        </main>
     </div>
-
-    <!-- Cart Items -->
-    <div class="cart-table" id="cartTable">
-        <table>
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Subtotal</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody id="cartItems">
-                <!-- Cart items will be inserted here by JavaScript -->
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Order Summary -->
-    <div class="order-summary" id="orderSummary">
-        <h3>Order Summary</h3>
-        <div class="summary-row">
-            <span>Subtotal</span>
-            <span id="subtotal">₹0</span>
-        </div>
-        <div class="summary-row">
-            <span>Shipping</span>
-            <span id="shipping">₹0</span>
-        </div>
-        <div class="summary-row">
-            <span>Tax (12%)</span>
-            <span id="tax">₹0</span>
-        </div>
-        <div class="summary-row summary-total">
-            <span>Total</span>
-            <span id="total">₹0</span>
-        </div>
-        <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
-    </div>
-
-    <!-- Empty Cart State -->
-    <div class="empty-cart" id="emptyCart" style="display: none;">
-        <h3>Your Cart is Empty</h3>
-        <p>You haven't added any products to your purchase cart yet.</p>
-        <button class="shop-btn" id="shopBtn">Browse Products</button>
-    </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // DOM Elements
@@ -443,13 +493,13 @@
                 // Navigation buttons
                 backToProductsBtn.addEventListener('click', function() {
                     // In a real app, this would navigate back to products page
-                    window.location.href = "./dashboards.php?products";
+                    window.location.href = "./products.php?products";
 
                 });
 
                 shopBtn.addEventListener('click', function() {
                     // In a real app, this would navigate to products page
-                    window.location.href = "./dashboards.php?products";
+                    window.location.href = "./products.php?products";
                 });
             }
 

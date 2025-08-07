@@ -9,6 +9,52 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
+            --primary: #09122c;
+            --primary-light: #ff8e8e;
+            --primary-dark: #596792;
+            --secondary: #11204be0;
+            --accent: #ffa502;
+            --dark: #2f3542;
+            --light: #f3f4f6;
+            --white: #ffffff;
+            --success: #2ed573;
+            --warning: #ffa502;
+            --danger: #ff4757;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Montserrat", sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+
+        }
+
+        /* Dashboard Layout */
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+    </style>
+    <style>
+        :root {
             --primary-color: #000000ff;
             --secondary-color: #f9fafb;
             --accent-color: #10b981;
@@ -127,6 +173,7 @@
         }
 
         .quantity-btn {
+
             background: none;
             border: none;
             width: 30px;
@@ -301,12 +348,23 @@
             border: 2px solid var(--primary-light);
         }
     </style>
+    <style>
+        /* Hide spinner arrows for Chrome, Safari, Edge, Opera */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Hide spinner arrows for Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
 </head>
 
 <?php
 session_start();
-
-use function PHPSTORM_META\map;
 
 $conn = new mysqli("localhost", "root", "", "scms");
 if ($conn->connect_error) {
@@ -317,110 +375,177 @@ $result = $conn->query($sql);
 $products = [];
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $products[] = $row;
+        $products[$row['id']] = $row;
     }
 }
 
-$_SESSION['cart'];
+// Handle AJAX add-to-cart
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajax']) && $_POST['ajax'] === '1') {
+    $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+    $qty = isset($_POST['quantity']) ? intval($_POST['quantity']) : 0;
+    $success = false;
+    if (isset($products[$id]) && $qty > 0) {
+        if (!isset($_SESSION['cart'][$id])) {
+            $_SESSION['cart'][$id] = [
+                'name' => $products[$id]['name'],
+                'price' => $products[$id]['price'],
+                'quantity' => 0
+            ];
+        }
+        $_SESSION['cart'][$id]['quantity'] += $qty;
+        $success = true;
+    }
+    // Calculate total cart quantity
+    $total = 0;
+    if (isset($_SESSION['cart'])) {
+        foreach ($_SESSION['cart'] as $item) {
+            $total += $item['quantity'];
+        }
+    }
+    header('Content-Type: application/json');
+    echo json_encode(['success' => $success, 'cartCount' => $total]);
+    $conn->close();
+    exit;
+}
+
+function getCartQuantityCount()
+{
+    if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
+        return 0;
+    }
+    $total = 0;
+    foreach ($_SESSION['cart'] as $item) {
+        $total += $item['quantity'];
+    }
+    return $total;
+}
 
 $conn->close();
 ?>
 
 <body>
-    <!-- Main content -->
-    <!-- Top Navigation -->
-    <nav class="top-nav">
-        <div class="nav-left">
-            <button class="menu-toggle">
-                <i class="fas fa-bars"></i>
-            </button>
-            <h1 class="page-title">Vendor Dashboard</h1>
-        </div>
-        <div class="nav-right">
-            <button class="notification-btn">
-                <a style="text-decoration: none; color:black; " href="?cart">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    <span class="notification-badge">3</span>
-                </a>
-            </button>
-            <button class="profile-btn">
-                <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Profile" class="profile-img">
-            </button>
-        </div>
-    </nav>
-
-    <!-- Categories filter -->
-    <div class="categories">
-        <button class="category-btn active">RAPID REHYDRATION</button>
-        <button class="category-btn">ICE HYDRATION</button>
-        <button class="category-btn">HYDRATION</button>
-        <button class="category-btn">ENERGY</button>
-        <button class="category-btn">HYDRATION+ STICKS</button>
-    </div>
-
-    <!-- Products grid -->
-    <div class="products-grid">
-
-    </div>
-    <!-- Cart summary bar -->
-    <div class="products-grid">
-        <?php foreach ($products as $product) {
-            $count = 0  ?>
-            <form action="" class="product-card">
-                <img src="<?php echo htmlspecialchars($product['image'] ?? ''); ?>" alt="<?php echo htmlspecialchars($product['title'] ?? ''); ?>" class="product-image">
-                <div class="product-details">
-                    <div class="product-title"><?php echo htmlspecialchars($product['name'] ?? ''); ?></div>
-                    <div class="product-supplier"><?php echo htmlspecialchars($product['description'] ?? ''); ?></div>
-                    <div class="product-price">₹<?php echo number_format($product['price'] ?? 0); ?></div>
-                    <div class="product-meta">
-                        <span>MOQ: <?php echo htmlspecialchars($product['moq'] ?? ''); ?> units</span>
-                        <span>In stock: <?php echo htmlspecialchars($product['stock'] ?? ''); ?></span>
-                    </div>
-                    <div class="product-actions">
-                        <div class="quantity-control">
-                            <button class="quantity-btn">-</button>
-                            <input type="text" class="quantity-input" value="1" min="1" max="99">
-                            <button class="quantity-btn">+</button>
-                        </div>
-                        <button class="add-to-cart">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6 2L3 6V20C3 20.5304 3.21071 21.0391 3.58579 21.4142C3.96086 21.7893 4.46957 22 5 22H19C19.5304 22 20.0391 21.7893 20.4142 21.4142C20.7893 21.0391 21 20.5304 21 20V6L18 2H6Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M3 6H21" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M16 10C16 11.0609 15.5786 12.0783 14.8284 12.8284C14.0783 13.5786 13.0609 14 12 14C10.9391 14 9.92172 13.5786 9.17157 12.8284C8.42143 12.0783 8 11.0609 8 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                            Add
-                        </button>
-                    </div>
+    <div class="dashboard">
+        <?php include('./sidebar.php'); ?>
+        <main class="main-content">
+            <!-- Main content -->
+            <!-- Top Navigation -->
+            <nav class="top-nav">
+                <div class="nav-left">
+                    <button class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">Vendor Dashboard</h1>
                 </div>
-            </form>
-        <?php } ?>
+                <div class="nav-right">
+                    <button class="notification-btn">
+                        <a style="text-decoration: none; color:black; " href="./cart.php">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span class="notification-badge"><?php echo getCartQuantityCount(); ?></span>
+                        </a>
+                    </button>
+                    <button class="profile-btn">
+                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Profile" class="profile-img">
+                    </button>
+                </div>
+            </nav>
+
+            <!-- Categories filter -->
+            <div class="categories">
+                <button class="category-btn active">RAPID REHYDRATION</button>
+                <button class="category-btn">ICE HYDRATION</button>
+                <button class="category-btn">HYDRATION</button>
+                <button class="category-btn">ENERGY</button>
+                <button class="category-btn">HYDRATION+ STICKS</button>
+            </div>
+
+            <!-- Products grid -->
+            <!-- <div class="products-grid"></div> -->
+            <div class="products-grid">
+                <?php foreach ($products as $product) : ?>
+                    <form class="product-card add-to-cart-form" method="post" autocomplete="off">
+                        <input hidden type="number" name="id" value="<?php echo $product['id'] ?>">
+                        <img src="<?php echo htmlspecialchars($product['image'] ?? ''); ?>" alt="<?php echo htmlspecialchars($product['title'] ?? ''); ?>" class="product-image">
+                        <div class="product-details">
+                            <div class="product-title"><?php echo htmlspecialchars($product['name'] ?? ''); ?></div>
+                            <div class="product-supplier"><?php echo htmlspecialchars($product['description'] ?? ''); ?></div>
+                            <div class="product-price">₹<?php echo number_format($product['price'] ?? 0); ?></div>
+                            <div class="product-meta">
+                                <span>MOQ: <?php echo htmlspecialchars($product['moq'] ?? ''); ?> units</span>
+                                <span>In stock: <?php echo htmlspecialchars($product['stock'] ?? ''); ?></span>
+                            </div>
+                            <div class="product-actions">
+                                <div class="quantity-control">
+                                    <button type="button" class="quantity-btn">-</button>
+                                    <input type="number" class="quantity-input" value="5" name="quantity" min="5" max="99">
+                                    <button type="button" class="quantity-btn">+</button>
+                                </div>
+                                <button type="submit" class="add-to-cart">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M6 2L3 6V20C3 20.5304 3.21071 21.0391 3.58579 21.4142C3.96086 21.7893 4.46957 22 5 22H19C19.5304 22 20.0391 21.7893 20.4142 21.4142C20.7893 21.0391 21 20.5304 21 20V6L18 2H6Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M3 6H21" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M16 10C16 11.0609 15.5786 12.0783 14.8284 12.8284C14.0783 13.5786 13.0609 14 12 14C10.9391 14 9.92172 13.5786 9.17157 12.8284C8.42143 12.0783 8 11.0609 8 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                <?php endforeach; ?>
+            </div>
+        </main>
     </div>
 </body>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.product-card').forEach(function(card) {
-        const minusBtn = card.querySelector('.quantity-btn:first-child');
-        const plusBtn = card.querySelector('.quantity-btn:last-child');
-        const input = card.querySelector('.quantity-input');
-        const max = parseInt(input.getAttribute('max')) || 99;
-        const min = parseInt(input.getAttribute('min')) || 1;
+    // Quantity controls
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.product-card').forEach(function(card) {
+            const minusBtn = card.querySelector('.quantity-btn:first-child');
+            const plusBtn = card.querySelector('.quantity-btn:last-child');
+            const input = card.querySelector('.quantity-input');
+            const max = parseInt(input.getAttribute('max')) || 99;
+            const min = parseInt(input.getAttribute('min')) || 1;
 
-        minusBtn.addEventListener('click', function () {
-            let value = parseInt(input.value) || min;
-            if (value > min) input.value = value - 1;
+            minusBtn.addEventListener('click', function() {
+                let value = parseInt(input.value) || min;
+                if (value > min) input.value = value - 1;
+            });
+
+            plusBtn.addEventListener('click', function() {
+                let value = parseInt(input.value) || min;
+                if (value < max) input.value = value + 1;
+            });
+
+            input.addEventListener('input', function() {
+                let value = parseInt(input.value) || min;
+                if (value < min) input.value = min;
+                if (value > max) input.value = max;
+            });
         });
 
-        plusBtn.addEventListener('click', function () {
-            let value = parseInt(input.value) || min;
-            if (value < max) input.value = value + 1;
-        });
-
-        input.addEventListener('input', function () {
-            let value = parseInt(input.value) || min;
-            if (value < min) input.value = min;
-            if (value > max) input.value = max;
+        // AJAX add-to-cart
+        document.querySelectorAll('.add-to-cart-form').forEach(function(form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const formData = new FormData(form);
+                formData.append('ajax', '1');
+                fetch(window.location.href, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update cart badge
+                        const badge = document.querySelector('.notification-badge');
+                        if (badge) badge.textContent = data.cartCount;
+                    } else {
+                        alert('Failed to add to cart.');
+                    }
+                })
+                .catch(() => alert('Error adding to cart.'));
+            });
         });
     });
-});
 </script>
+
 </html>
