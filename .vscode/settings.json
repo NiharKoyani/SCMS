@@ -1,18 +1,13 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "prettier.printWidth": 220,
-  "prettier.semi": true,
-  "prettier.singleQuote": true,
-  "editor.codeActionsOnSave": {
-    "source.organizeImports": "always"
-  },
   "prettier.jsxSingleQuote": true,
   "editor.fontLigatures": true,
   "editor.fontFamily": "JetBrains Mono, Menlo, Monaco, 'Courier New', monospace",
   "editor.fontWeight": "normal",
-  "editor.fontSize": 14,
+  "editor.fontSize": 15,
   "[php]": {
     "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

@@ -10,6 +10,7 @@
     <style>
         :root {
             --primary: #09122c;
+
             --primary-light: #ff8e8e;
             --primary-dark: #596792;
             --secondary: #11204be0;
@@ -366,6 +367,10 @@
 <?php
 session_start();
 
+error_reporting(E_ALL);        // Report all errors
+ini_set("display_errors", 1);
+
+
 $conn = new mysqli("localhost", "root", "", "scms");
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -379,45 +384,14 @@ if ($result && $result->num_rows > 0) {
     }
 }
 
-// Handle AJAX add-to-cart
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajax']) && $_POST['ajax'] === '1') {
-    $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
-    $qty = isset($_POST['quantity']) ? intval($_POST['quantity']) : 0;
-    $success = false;
-    if (isset($products[$id]) && $qty > 0) {
-        if (!isset($_SESSION['cart'][$id])) {
-            $_SESSION['cart'][$id] = [
-                'name' => $products[$id]['name'],
-                'price' => $products[$id]['price'],
-                'quantity' => 0
-            ];
-        }
-        $_SESSION['cart'][$id]['quantity'] += $qty;
-        $success = true;
-    }
-    // Calculate total cart quantity
-    $total = 0;
-    if (isset($_SESSION['cart'])) {
-        foreach ($_SESSION['cart'] as $item) {
-            $total += $item['quantity'];
-        }
-    }
-    header('Content-Type: application/json');
-    echo json_encode(['success' => $success, 'cartCount' => $total]);
-    $conn->close();
-    exit;
-}
+$sql = "SELECT * FROM cart_items";
+$result = $conn->query($sql);
 
-function getCartQuantityCount()
-{
-    if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
-        return 0;
+$total_item_in_cart = 0;
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $total_item_in_cart += $row['quantity'];
     }
-    $total = 0;
-    foreach ($_SESSION['cart'] as $item) {
-        $total += $item['quantity'];
-    }
-    return $total;
 }
 
 $conn->close();
@@ -425,7 +399,7 @@ $conn->close();
 
 <body>
     <div class="dashboard">
-        <?php include('./sidebar.php'); ?>
+        <?php include('./src/sidebar.php'); ?>
         <main class="main-content">
             <!-- Main content -->
             <!-- Top Navigation -->
@@ -440,7 +414,7 @@ $conn->close();
                     <button class="notification-btn">
                         <a style="text-decoration: none; color:black; " href="./cart.php">
                             <i class="fa-solid fa-cart-shopping"></i>
-                            <span class="notification-badge"><?php echo getCartQuantityCount(); ?></span>
+                            <span class="notification-badge"><?php echo $total_item_in_cart; ?></span>
                         </a>
                     </button>
                     <button class="profile-btn">
@@ -462,8 +436,8 @@ $conn->close();
             <!-- <div class="products-grid"></div> -->
             <div class="products-grid">
                 <?php foreach ($products as $product) : ?>
-                    <form class="product-card add-to-cart-form" method="post" autocomplete="off">
-                        <input hidden type="number" name="id" value="<?php echo $product['id'] ?>">
+                    <form class="product-card" action="./src/add_to_cart.php" method="post" autocomplete="off">
+                        <input hidden type="number" name="id" value="<?php echo $product['id']  ?>">
                         <img src="<?php echo htmlspecialchars($product['image'] ?? ''); ?>" alt="<?php echo htmlspecialchars($product['title'] ?? ''); ?>" class="product-image">
                         <div class="product-details">
                             <div class="product-title"><?php echo htmlspecialchars($product['name'] ?? ''); ?></div>
@@ -476,7 +450,7 @@ $conn->close();
                             <div class="product-actions">
                                 <div class="quantity-control">
                                     <button type="button" class="quantity-btn">-</button>
-                                    <input type="number" class="quantity-input" value="5" name="quantity" min="5" max="99">
+                                    <input type="number" class="quantity-input" value="6" name="quantity" min="6" max="99">
                                     <button type="button" class="quantity-btn">+</button>
                                 </div>
                                 <button type="submit" class="add-to-cart">
@@ -494,58 +468,36 @@ $conn->close();
             </div>
         </main>
     </div>
+    <script>
+        // Quantity controls
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.product-card').forEach(function(card) {
+                const minusBtn = card.querySelector('.quantity-btn:first-child');
+                const plusBtn = card.querySelector('.quantity-btn:last-child');
+                const input = card.querySelector('.quantity-input');
+                const max = parseInt(input.getAttribute('max')) || 99;
+                const min = parseInt(input.getAttribute('min')) || 6;
+
+                minusBtn.addEventListener('click', function() {
+                    let value = parseInt(input.value) || min;
+                    if (value > min) input.value = value - 1;
+                });
+
+                plusBtn.addEventListener('click', function() {
+                    let value = parseInt(input.value) || min;
+                    if (value < max) input.value = value + 1;
+                });
+
+                input.addEventListener('input', function() {
+                    let value = parseInt(input.value) || min;
+                    if (value < min) input.value = min;
+                    if (value > max) input.value = max;
+                });
+            });
+
+
+        });
+    </script>
 </body>
-<script>
-    // Quantity controls
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.product-card').forEach(function(card) {
-            const minusBtn = card.querySelector('.quantity-btn:first-child');
-            const plusBtn = card.querySelector('.quantity-btn:last-child');
-            const input = card.querySelector('.quantity-input');
-            const max = parseInt(input.getAttribute('max')) || 99;
-            const min = parseInt(input.getAttribute('min')) || 1;
-
-            minusBtn.addEventListener('click', function() {
-                let value = parseInt(input.value) || min;
-                if (value > min) input.value = value - 1;
-            });
-
-            plusBtn.addEventListener('click', function() {
-                let value = parseInt(input.value) || min;
-                if (value < max) input.value = value + 1;
-            });
-
-            input.addEventListener('input', function() {
-                let value = parseInt(input.value) || min;
-                if (value < min) input.value = min;
-                if (value > max) input.value = max;
-            });
-        });
-
-        // AJAX add-to-cart
-        document.querySelectorAll('.add-to-cart-form').forEach(function(form) {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const formData = new FormData(form);
-                formData.append('ajax', '1');
-                fetch(window.location.href, {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        // Update cart badge
-                        const badge = document.querySelector('.notification-badge');
-                        if (badge) badge.textContent = data.cartCount;
-                    } else {
-                        alert('Failed to add to cart.');
-                    }
-                })
-                .catch(() => alert('Error adding to cart.'));
-            });
-        });
-    });
-</script>
 
 </html>

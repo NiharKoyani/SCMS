@@ -1,6 +1,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-
+    <?php
+    if (isset($_GET['logout'])) {
+        session_unset();
+        session_destroy();
+    }
+    ?>
+    <!-- <link rel="stylesheet" href=""> -->
     <style>
         /* Sidebar */
         .sidebar {
@@ -95,6 +101,25 @@
         .menu-item.active .menu-link {
             font-weight: 600;
         }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+        }
     </style>
 
 
@@ -102,7 +127,7 @@
     <aside class="sidebar">
         <div class="sidebar-header">
             <div class="logo">
-                <img style="width: 14rem;" src="../../Asserts/Prime-Logo.png" alt="">
+                <img style="width: 14rem;" src="../Asserts/Prime-Logo.png" alt="">
             </div>
         </div>
 
@@ -143,7 +168,7 @@
                     <span>Settings</span>
                 </a>
             </li>
-            <li class="menu-item <?php echo isset($_GET['']) ? 'active' : null ?>">
+            <li class="menu-item">
                 <a href="?logout" style="color: red;" class="menu-link">
                     <i class="fas fa-users"></i>
                     <span>Log Out</span>

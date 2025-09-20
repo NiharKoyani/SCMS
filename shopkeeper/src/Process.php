@@ -52,7 +52,7 @@ if (isset($_POST['submit'])) {
             if ($existingMobile === $mobile) {
                 $_SESSION['registration_error_phoneNumber'] = "This mobile number is already registered.";
             }
-            header("Location: ./registration.php");
+            header("Location: ../registration.php");
             exit();
         }
         $checkStmt->close();
@@ -64,7 +64,7 @@ if (isset($_POST['submit'])) {
         // Execute the statement
         if ($stmt->execute()) {
             // Registration successful - redirect to success page
-            header("Location: ./registration_sucess.php");
+            header("Location: ../registration_sucess.php");
             exit();
         } else {
             echo "Error: " . $stmt->error;
@@ -95,7 +95,7 @@ if (isset($_POST['submit'])) {
         if (password_verify($password, $hashedPassword)) {
             // Login successful
             $_SESSION['shopkeeper_id'] = $userId;
-            header("Location: ./dashboard.php?dashboard");
+            header("Location: ../dashboard.php?dashboard");
             exit();
         } else {
             $_SESSION['login_error'] = "Invalid password.";
@@ -109,8 +109,6 @@ if (isset($_POST['submit'])) {
     }
     $stmt->close();
 }
-
-
 
 // Close connection
 $conn->close();

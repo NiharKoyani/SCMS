@@ -1,0 +1,52 @@
+<?php
+session_start();
+
+error_reporting(E_ALL);        // Report all errors
+ini_set("display_errors", 1);
+
+$shopkeeperId = $_SESSION['shopkeeper_id'];
+$productId = $_POST['id'];
+$userQuantity = $_POST['quantity'];
+
+
+include('../../Utility/db.php');
+
+// Check if the cart item already exists for this shopkeeper and product
+$sql = "SELECT quantity FROM cart_items WHERE shopkeeper_id = ? AND product_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ii", $shopkeeperId, $productId);
+$stmt->execute();
+
+$stmt->store_result();
+if ($stmt->num_rows > 0) {
+    // Item exists, update quantity
+    $stmt->bind_result($quantity);
+    $stmt->fetch();
+    $newQuantity = $quantity + $userQuantity;
+
+    $updateSql = "UPDATE cart_items SET quantity = ? WHERE shopkeeper_id = ? AND product_id = ?";
+    $updateStmt = $conn->prepare($updateSql);
+    $updateStmt->bind_param("iii", $newQuantity, $shopkeeperId, $productId);
+    $updateStmt->execute();
+    $updateStmt->close();
+
+    $stmt->close();
+    $conn->close();
+    header('Location: ../cart.php');
+    exit;
+}
+$stmt->close();
+
+
+$sql = "INSERT INTO cart_items (shopkeeper_id, product_id, quantity) VALUES (?, ?, ?)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("iii", $shopkeeperId, $productId, $userQuantity);
+
+if ($stmt->execute()) {
+    header('Location: ../cart.php');
+} else {
+    echo "Error: " . $stmt->error;
+}
+
+$stmt->close();
+$conn->close();
