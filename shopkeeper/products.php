@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+session_start();
+$currentUser = $_SESSION['shopkeeper_id'];
+?>
 
 <head>
     <meta charset="UTF-8">
@@ -365,7 +369,6 @@
 </head>
 
 <?php
-session_start();
 
 error_reporting(E_ALL);        // Report all errors
 ini_set("display_errors", 1);
@@ -375,7 +378,21 @@ $conn = new mysqli("localhost", "root", "", "scms");
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-$sql = "SELECT * FROM products";
+
+if (isset($_GET['rapidRehydration'])) {
+    $sql = "SELECT * FROM products WHERE category='RAPID REHYDRATION'";
+} elseif (isset($_GET['iceHydration'])) {
+    $sql = "SELECT * FROM products WHERE category='ICE HYDRATION'";
+} elseif (isset($_GET['hydration'])) {
+    $sql = "SELECT * FROM products WHERE category='HYDRATION'";
+} elseif (isset($_GET['energy'])) {
+    $sql = "SELECT * FROM products WHERE category='ENERGY'";
+} elseif (isset($_GET['hydrationPlusSticks'])) {
+    $sql = "SELECT * FROM products WHERE category='HYDRATION PLUS STICKS'";
+} else {
+    $sql = "SELECT * FROM products";
+}
+
 $result = $conn->query($sql);
 $products = [];
 if ($result && $result->num_rows > 0) {
@@ -384,7 +401,7 @@ if ($result && $result->num_rows > 0) {
     }
 }
 
-$sql = "SELECT * FROM cart_items";
+$sql = "SELECT * FROM cart_items WHERE shopkeeper_id='$currentUser'";
 $result = $conn->query($sql);
 
 $total_item_in_cart = 0;
@@ -425,11 +442,11 @@ $conn->close();
 
             <!-- Categories filter -->
             <div class="categories">
-                <button class="category-btn active">RAPID REHYDRATION</button>
-                <button class="category-btn">ICE HYDRATION</button>
-                <button class="category-btn">HYDRATION</button>
-                <button class="category-btn">ENERGY</button>
-                <button class="category-btn">HYDRATION+ STICKS</button>
+                <a href="?rapidRehydration"><button class="category-btn <?php echo isset($_GET['rapidRehydration']) ? 'active' : null; ?>">RAPID REHYDRATION</button></a>
+                <a href="?iceHydration"><button class="category-btn <?php echo isset($_GET['iceHydration']) ? 'active' : null; ?>">ICE HYDRATION</button></a>
+                <a href="?hydration"><button class="category-btn <?php echo isset($_GET['hydration']) ? 'active' : null; ?>">HYDRATION</button></a>
+                <a href="?energy"><button class="category-btn <?php echo isset($_GET['energy']) ? 'active' : null; ?>">ENERGY</button></a>
+                <a href="?hydrationPlusSticks"><button class="category-btn <?php echo isset($_GET['hydrationPlusSticks']) ? 'active' : null; ?>">HYDRATION+ STICKS</button></a>
             </div>
 
             <!-- Products grid -->
@@ -438,6 +455,7 @@ $conn->close();
                 <?php foreach ($products as $product) : ?>
                     <form class="product-card" action="./src/add_to_cart.php" method="post" autocomplete="off">
                         <input hidden type="number" name="id" value="<?php echo $product['id']  ?>">
+                        <input hidden type="text" name="categoryCode" value="<?php echo $product['categoryCode']  ?>">
                         <img src="<?php echo htmlspecialchars($product['image'] ?? ''); ?>" alt="<?php echo htmlspecialchars($product['title'] ?? ''); ?>" class="product-image">
                         <div class="product-details">
                             <div class="product-title"><?php echo htmlspecialchars($product['name'] ?? ''); ?></div>

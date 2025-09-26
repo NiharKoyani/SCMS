@@ -7,6 +7,7 @@ ini_set("display_errors", 1);
 $shopkeeperId = $_SESSION['shopkeeper_id'];
 $productId = $_POST['id'];
 $userQuantity = $_POST['quantity'];
+$categoryCode = $_POST['categoryCode'];
 
 
 include('../../Utility/db.php');
@@ -37,10 +38,9 @@ if ($stmt->num_rows > 0) {
 }
 $stmt->close();
 
-
-$sql = "INSERT INTO cart_items (shopkeeper_id, product_id, quantity) VALUES (?, ?, ?)";
+$sql = "INSERT INTO cart_items (shopkeeper_id, product_id, quantity, categoryCode) VALUES (?, ?, ?, ?)";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("iii", $shopkeeperId, $productId, $userQuantity);
+$stmt->bind_param("iiis", $shopkeeperId, $productId, $userQuantity, $categoryCode);
 
 if ($stmt->execute()) {
     header('Location: ../cart.php');

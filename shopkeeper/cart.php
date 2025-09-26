@@ -280,12 +280,6 @@ foreach ($result as $row) {
     }
 }
 
-if (isset($_GET['remove'])) {
-    $Id = $_GET['remove'];
-    $sql = "DELETE FROM cart_items WHERE shopkeeper_id=$currentUser AND product_id=$Id";
-    $result = $conn->query($sql);
-}
-
 $subTotal = 0;
 foreach ($products as $product) {
     $subTotal += ($product['price'] ?? 0) * ($product['quantity'] ?? 0);
@@ -325,7 +319,7 @@ $total = round(($subTotal + $shipping + $tax), 2);
                         </thead>
                         <?php foreach ($products as $product) : ?>
                             <form action="./src/cartManager.php" method="POST">
-                                <input type="number" hidden value="<?php echo htmlspecialchars($product['id'] ?? ''); ?>" name="Pid">
+                                <input type="number" hidden value="<?php echo htmlspecialchars($product['id'] ?? ''); ?>" name="productId">
                                 <input type="number" hidden value="<?php echo $_SESSION['shopkeeper_id'] ?>" name="shopkeeper_id">
                                 <tbody id="cartItems">
                                     <td>
@@ -338,13 +332,13 @@ $total = round(($subTotal + $shipping + $tax), 2);
                                     <td>
                                         <div class="quantity-control">
                                             <button type="submit" class="quantity-btn">-</button>
-                                            <input type="number" class="quantity-input" value="<?php echo htmlspecialchars($product['quantity'] ?? ''); ?>" name="quantity" min="6" max="99">
+                                            <input type="number" class="quantity-input" value="<?php echo htmlspecialchars($product['quantity'] ?? ''); ?>" name="quantity" min="6" max="51">
                                             <button type="submit" class="quantity-btn">+</button>
                                         </div>
                                     </td>
                                     <td class="item-subtotal">₹<?php echo htmlspecialchars($product['price'] * $product['quantity']); ?></td>
                                     <td>
-                                        <a href="./cart.php?remove=<?php echo $product['productId'] ?>" class="remove-btn">
+                                        <a href="./src/delete_product.php?remove=<?php echo $product['productId'] ?>" class="remove-btn">
                                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                             </svg>
@@ -375,7 +369,10 @@ $total = round(($subTotal + $shipping + $tax), 2);
                         <span>Total</span>
                         <span id="total">₹ <?php echo $total ?></span>
                     </div>
-                    <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+                    <form action="./src/order-submit.php" method="post">
+                        <input hidden type="text" value="<?php echo $product['categoryCode'] ?>" name="categoryCode">
+                        <button type="submit" class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+                    </form>
                 </div>
             </div>
 
@@ -397,21 +394,12 @@ $total = round(($subTotal + $shipping + $tax), 2);
                 const price = card.querySelector('#price');
                 console.log(price);
 
-                const max = parseInt(input.getAttribute('max')) || 99;
+                const max = parseInt(input.getAttribute('max')) || 51;
                 const min = parseInt(input.getAttribute('min')) || 6;
 
                 minusBtn.addEventListener('click', function() {
                     let value = parseInt(input.value) || min;
-                    if (value > min) {
-                        input.value = value - 1;
-                        // Submit the form to update quantity
-                        // const hiddenInput = document.createElement('input');
-                        // hiddenInput.type = 'hidden';
-                        // hiddenInput.name = 'minusBtn';
-                        // hiddenInput.value = '1';
-                        // card.closest('form').appendChild(hiddenInput);
-                        // card.closest('form').submit();
-                    }
+                    if (value > min) input.value = value - 1;
                 });
 
                 plusBtn.addEventListener('click', function() {

@@ -1,12 +1,9 @@
 <?php
-$id = $_POST['Pid'];
+$id = $_POST['productId'];
 $shopkeeper_id = $_POST['shopkeeper_id'];
 $quantity = $_POST['quantity'];
 
-$conn = new mysqli('localhost', 'root', '', 'scms');
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include('../../Utility/db.php');
 
 $sql = "UPDATE cart_items SET quantity = ? WHERE shopkeeper_id = ? AND product_id = ?";
 $stmt = $conn->prepare($sql);

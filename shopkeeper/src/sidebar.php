@@ -132,37 +132,37 @@
         </div>
 
         <ul class="sidebar-menu">
-            <li class="menu-item <?php echo isset($_GET['dashboard']) ? 'active' : null ?>">
-                <a href="./dashboard.php?dashboard" class="menu-link">
+            <li class="menu-item <?php echo basename($_SERVER['PHP_SELF']) === 'dashboard.php' ? 'active' : null ?>">
+                <a href="./dashboard.php" class="menu-link">
                     <i class="fas fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
-            <li class="menu-item <?php echo isset($_GET['products']) ? 'active' : null ?>">
-                <a href="./products.php?products" class="menu-link">
+            <li class="menu-item <?php echo basename($_SERVER['PHP_SELF']) === 'products.php' ? 'active' : null ?>">
+                <a href="./products.php" class="menu-link">
                     <i class="fas fa-box-open"></i>
                     <span>Products</span>
                 </a>
             </li>
-            <li class="menu-item <?php echo isset($_GET['']) ? 'active' : null ?>">
-                <a href="#" class="menu-link">
+            <li class="menu-item <?php echo basename($_SERVER['PHP_SELF']) === 'recent-orders.php' ? 'active' : null ?>">
+                <a href="./recent-orders.php" class="menu-link">
                     <i class="fas fa-shopping-bag"></i>
-                    <span>Orders</span>
+                    <span>Recent Orders</span>
                 </a>
             </li>
-            <li class="menu-item <?php echo isset($_GET['']) ? 'active' : null ?>">
+            <li class="menu-item <?php echo basename($_SERVER['PHP_SELF']) === '' ? 'active' : null ?>">
                 <a href="#" class="menu-link">
                     <i class="fas fa-chart-line"></i>
                     <span>Analytics</span>
                 </a>
             </li>
-            <li class="menu-item <?php echo isset($_GET['']) ? 'active' : null ?>">
+            <li class="menu-item <?php echo basename($_SERVER['PHP_SELF']) === '' ? 'active' : null ?>">
                 <a href="#" class="menu-link">
                     <i class="fas fa-store"></i>
                     <span>My Shop</span>
                 </a>
             </li>
-            <li class="menu-item <?php echo isset($_GET['']) ? 'active' : null ?>">
+            <li class="menu-item <?php echo basename($_SERVER['PHP_SELF']) === '' ? 'active' : null ?>">
                 <a href="#" class="menu-link">
                     <i class="fas fa-cog"></i>
                     <span>Settings</span>
