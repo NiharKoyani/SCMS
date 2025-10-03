@@ -10,6 +10,7 @@ ini_set("display_errors", 1);
 include('../../Utility/db.php');
 
 $categoryCode = $_POST['categoryCode'];
+$total = $_POST['total'];
 
 $sql = "SELECT * FROM cart_items WHERE shopkeeper_id=$currentUser";
 $result = $conn->query($sql);
@@ -25,9 +26,9 @@ foreach ($result as $row) {
     $productId = $row['product_id'];
     $uIdCode = $currentUser . $categoryCode . $next_id_info;
 
-    $sql = "INSERT INTO orders (orderId, shopkeeper_id, product_id, quantity, status) VALUES (?, ?, ?, ?, 'pending')";
+    $sql = "INSERT INTO orders (orderId, shopkeeper_id, product_id, quantity, status, total) VALUES (?, ?, ?, ?, 'pending', ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("siii", $uIdCode, $row['shopkeeper_id'], $row['product_id'], $row['quantity']);
+    $stmt->bind_param("siiii", $uIdCode, $row['shopkeeper_id'], $row['product_id'], $row['quantity'], $total);
 
     if ($stmt->execute()) {
         echo "Order place successfully." . $next_id_info;

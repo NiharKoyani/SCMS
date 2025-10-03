@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
+// include('./index.php');
 session_start();
 $currentUser = $_SESSION['shopkeeper_id'];
 ?>
@@ -11,10 +12,14 @@ $currentUser = $_SESSION['shopkeeper_id'];
     <title>Purchase Products - Vendor Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        :root {
-            --primary: #09122c;
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="top-nav.css">
 
+    <style>
+        /* ---------- CSS Variables ---------- */
+        :root {
+            /* Original palette */
+            --primary: #09122c;
             --primary-light: #ff8e8e;
             --primary-dark: #596792;
             --secondary: #11204be0;
@@ -26,40 +31,8 @@ $currentUser = $_SESSION['shopkeeper_id'];
             --warning: #ffa502;
             --danger: #ff4757;
             --sidebar-width: 280px;
-        }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Montserrat", sans-serif;
-        }
-
-        body {
-            background-color: var(--light);
-            color: var(--dark);
-            min-height: 100vh;
-            overflow-x: hidden;
-
-        }
-
-        /* Dashboard Layout */
-        .dashboard {
-            display: flex;
-            min-height: 100vh;
-            transition: all 0.3s ease;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            margin-left: var(--sidebar-width);
-            padding: 2rem;
-            transition: all 0.3s ease;
-        }
-    </style>
-    <style>
-        :root {
+            /* Extra palette */
             --primary-color: #000000ff;
             --secondary-color: #f9fafb;
             --accent-color: #10b981;
@@ -68,47 +41,30 @@ $currentUser = $_SESSION['shopkeeper_id'];
             --border-color: #e5e7eb;
         }
 
-        .container {
+        /* ---------- Reset ---------- */
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ---------- Dashboard Layout ---------- */
+        .dashboard {
             display: flex;
             min-height: 100vh;
+            transition: all 0.3s ease;
         }
 
-        /* Main content area */
-        /* .main-content {
+        .main-content {
             flex: 1;
-            padding: 30px;
-        } */
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+            transition: all 0.3s ease;
         }
 
-        .header h1 {
-            color: var(--text-color);
-            margin: 0;
-        }
-
-        .search-bar {
-            display: flex;
-            align-items: center;
-            background-color: white;
-            border-radius: 6px;
-            padding: 8px 12px;
-            width: 300px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .search-bar input {
-            border: none;
-            outline: none;
-            flex: 1;
-            padding: 4px;
-        }
-
-        /* Product grid for purchasing */
+        /* ---------- Product Grid ---------- */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -178,7 +134,6 @@ $currentUser = $_SESSION['shopkeeper_id'];
         }
 
         .quantity-btn {
-
             background: none;
             border: none;
             width: 30px;
@@ -212,7 +167,7 @@ $currentUser = $_SESSION['shopkeeper_id'];
             gap: 6px;
         }
 
-        /* Categories filter */
+        /* ---------- Categories Filter ---------- */
         .categories {
             display: flex;
             gap: 10px;
@@ -236,137 +191,19 @@ $currentUser = $_SESSION['shopkeeper_id'];
             border-color: var(--primary-color);
         }
 
-        /* Cart summary sticky bar */
-        .cart-summary {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            width: 100%;
-            background-color: white;
-            padding: 15px 30px;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .cart-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .cart-count {
-            background-color: var(--primary-color);
-            color: white;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-        }
-
-        .checkout-btn {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 10px 25px;
-            cursor: pointer;
-            font-weight: 500;
-        }
-    </style>
-    <style>
-        /* Top Navigation */
-        .top-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            background-color: var(--white);
-            padding: 1rem 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--dark);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        .page-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .notification-btn,
-        .profile-btn {
-            position: relative;
-            background: none;
-            border: none;
-            color: var(--dark);
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
-
-        .notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background-color: var(--danger);
-            color: var(--white);
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            font-size: 0.7rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .profile-img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary-light);
-        }
-    </style>
-    <style>
-        /* Hide spinner arrows for Chrome, Safari, Edge, Opera */
+        /* ---------- Input Number Spinner Removal ---------- */
         input[type=number]::-webkit-inner-spin-button,
         input[type=number]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
 
-        /* Hide spinner arrows for Firefox */
         input[type=number] {
             -moz-appearance: textfield;
         }
     </style>
 </head>
+
 
 <?php
 
@@ -450,7 +287,6 @@ $conn->close();
             </div>
 
             <!-- Products grid -->
-            <!-- <div class="products-grid"></div> -->
             <div class="products-grid">
                 <?php foreach ($products as $product) : ?>
                     <form class="product-card" action="./src/add_to_cart.php" method="post" autocomplete="off">

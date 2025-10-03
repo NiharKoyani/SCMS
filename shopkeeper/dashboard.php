@@ -1,3 +1,6 @@
+<?php
+// include('./index.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,54 +11,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="./Styling Area/dashboard.css">
+  <link rel="stylesheet" href="main.css">
 </head>
-<!-- <style>
-    :root {
-        --primary: #09122c;
-        --primary-light: #ff8e8e;
-        --primary-dark: #596792;
-        --secondary: #11204be0;
-        --accent: #ffa502;
-        --dark: #2f3542;
-        --light: #f3f4f6;
-        --white: #ffffff;
-        --success: #2ed573;
-        --warning: #ffa502;
-        --danger: #ff4757;
-        --sidebar-width: 280px;
-    }
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Montserrat", sans-serif;
-    }
-
-    body {
-        background-color: var(--light);
-        color: var(--dark);
-        min-height: 100vh;
-        overflow-x: hidden;
-
-    }
-
-    /* Dashboard Layout */
-    .dashboard {
-        display: flex;
-        min-height: 100vh;
-        transition: all 0.3s ease;
-    }
-
-    /* Main Content */
-    .main-content {
-        flex: 1;
-        margin-left: var(--sidebar-width);
-        padding: 2rem;
-        transition: all 0.3s ease;
-    }
-</style> -->
 <style>
+  /* =========================
+   Root Variables & Resets
+ ========================= */
   :root {
     --primary: #09122c;
     --primary-light: #ff8e8e;
@@ -71,21 +32,15 @@
     --sidebar-width: 280px;
   }
 
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Montserrat', sans-serif;
-  }
-
   body {
-    background-color: var(--light);
+    background: var(--light);
     color: var(--dark);
     min-height: 100vh;
-    overflow-x: hidden;
   }
 
-  /* Floating Bubbles Background */
+  /* =========================
+   Floating Bubbles Background
+ ========================= */
   .bubbles-bg {
     position: fixed;
     top: 0;
@@ -112,10 +67,7 @@
       opacity: 0;
     }
 
-    10% {
-      opacity: 0.3;
-    }
-
+    10%,
     90% {
       opacity: 0.3;
     }
@@ -127,14 +79,15 @@
     }
   }
 
-  /* Dashboard Layout */
+  /* =========================
+   Dashboard Layout
+ ========================= */
   .dashboard {
     display: flex;
     min-height: 100vh;
     transition: all 0.3s ease;
   }
 
-  /* Main Content */
   .main-content {
     flex: 1;
     margin-left: var(--sidebar-width);
@@ -142,10 +95,12 @@
     transition: all 0.3s ease;
   }
 
-  /* Sidebar */
+  /* =========================
+   Sidebar
+ ========================= */
   .sidebar {
     width: var(--sidebar-width);
-    background: black;
+    background: #000;
     color: var(--white);
     padding: 2rem 1.5rem;
     position: fixed;
@@ -206,12 +161,12 @@
     z-index: -1;
   }
 
-  .menu-item:hover::before {
+  .menu-item:hover::before,
+  .menu-item.active::before {
     left: 0;
   }
 
   .menu-item.active::before {
-    left: 0;
     background: rgba(255, 255, 255, 0.2);
   }
 
@@ -236,21 +191,15 @@
     font-weight: 600;
   }
 
-  /* Main Content */
-  .main-content {
-    flex: 1;
-    /* margin-left: var(--sidebar-width); */
-    padding: 2rem;
-    transition: all 0.3s ease;
-  }
-
-  /* Top Navigation */
+  /* =========================
+   Top Navigation
+ ========================= */
   .top-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
-    background-color: var(--white);
+    background: var(--white);
     padding: 1rem 1.5rem;
     border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
@@ -299,7 +248,7 @@
     position: absolute;
     top: -5px;
     right: -5px;
-    background-color: var(--danger);
+    background: var(--danger);
     color: var(--white);
     width: 18px;
     height: 18px;
@@ -318,7 +267,9 @@
     border: 2px solid var(--primary-light);
   }
 
-  /* Dashboard Widgets */
+  /* =========================
+   Dashboard Widgets
+ ========================= */
   .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -327,7 +278,7 @@
   }
 
   .widget {
-    background-color: var(--white);
+    background: var(--white);
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
@@ -371,7 +322,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(255, 107, 107, 0.1);
+    background: rgba(255, 107, 107, 0.1);
     color: var(--primary);
   }
 
@@ -400,9 +351,11 @@
     color: var(--danger);
   }
 
-  /* Sales Chart */
+  /* =========================
+   Sales Chart
+ ========================= */
   .sales-chart {
-    background-color: var(--white);
+    background: var(--white);
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
@@ -430,14 +383,14 @@
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 6px;
-    background-color: var(--light);
+    background: var(--light);
     color: var(--dark);
     cursor: pointer;
     transition: all 0.3s ease;
   }
 
   .period-btn.active {
-    background-color: var(--primary);
+    background: var(--primary);
     color: var(--white);
   }
 
@@ -446,9 +399,11 @@
     position: relative;
   }
 
-  /* Recent Orders */
+  /* =========================
+   Recent Orders Table
+ ========================= */
   .recent-orders {
-    background-color: var(--white);
+    background: var(--white);
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
@@ -505,21 +460,23 @@
   }
 
   .status-pending {
-    background-color: rgba(255, 165, 2, 0.1);
+    background: rgba(255, 165, 2, 0.1);
     color: var(--warning);
   }
 
   .status-completed {
-    background-color: rgba(46, 213, 115, 0.1);
+    background: rgba(46, 213, 115, 0.1);
     color: var(--success);
   }
 
   .status-cancelled {
-    background-color: rgba(255, 71, 87, 0.1);
+    background: rgba(255, 71, 87, 0.1);
     color: var(--danger);
   }
 
-  /* Product Animation */
+  /* =========================
+   Product Bottle Animation
+ ========================= */
   .product-animation {
     position: fixed;
     bottom: 2rem;
@@ -543,7 +500,7 @@
   .bottle-body {
     width: 100%;
     height: 80px;
-    background: linear-gradient(to bottom, rgb(101 101 101 / 80%), rgba(255, 255, 255, 0.5));
+    background: linear-gradient(to bottom, rgba(101, 101, 101, 0.8), rgba(255, 255, 255, 0.5));
     border-radius: 5px;
     position: relative;
     overflow: hidden;
@@ -562,7 +519,7 @@
   .bottle-neck {
     width: 30%;
     height: 20px;
-    background: linear-gradient(to bottom, rgb(0 0 0 / 90%), rgb(0 0 0 / 70%));
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7));
     margin: 0 auto;
     border-radius: 3px 3px 0 0;
   }
@@ -577,7 +534,7 @@
     position: absolute;
     width: 4px;
     height: 4px;
-    background-color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.8);
     border-radius: 50%;
     bottom: 0;
     animation: bubble-up 4s infinite ease-in;
@@ -599,7 +556,9 @@
     }
   }
 
-  /* Responsive Design */
+  /* =========================
+   Responsive
+ ========================= */
   @media (max-width: 1024px) {
     .sidebar {
       transform: translateX(-100%);

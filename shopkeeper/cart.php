@@ -9,8 +9,12 @@ $currentUser = $_SESSION['shopkeeper_id'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Cart - Vendor Dashboard</title>
+    <link rel="stylesheet" href="main.css">
+
     <style>
+        /* ---------- CSS Variables ---------- */
         :root {
+            /* Page palette */
             --primary-color: #4f46e5;
             --secondary-color: #f9fafb;
             --accent-color: #10b981;
@@ -18,14 +22,49 @@ $currentUser = $_SESSION['shopkeeper_id'];
             --light-text: #6b7280;
             --border-color: #e5e7eb;
             --danger-color: #ef4444;
+
+            /* Shared vendor palette */
+            --primary: #09122c;
+            --primary-light: #ff8e8e;
+            --primary-dark: #596792;
+            --secondary: #11204be0;
+            --accent: #ffa502;
+            --dark: #2f3542;
+            --light: #f3f4f6;
+            --white: #ffffff;
+            --success: #2ed573;
+            --warning: #ffa502;
+            --danger: #ff4757;
+            --sidebar-width: 280px;
         }
 
+        /* ---------- Reset & Body ---------- */
+
+
         body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f3f4f6;
-            color: var(--text-color);
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: #09122c;
+        }
+
+        /* ---------- Layout ---------- */
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+            transition: all 0.3s ease;
         }
 
         .container {
@@ -56,12 +95,7 @@ $currentUser = $_SESSION['shopkeeper_id'];
             gap: 8px;
         }
 
-        a {
-            text-decoration: none;
-            color: #09122c;
-        }
-
-        /* Cart items table */
+        /* ---------- Cart Table ---------- */
         .cart-table {
             width: 100%;
             background-color: white;
@@ -141,7 +175,7 @@ $currentUser = $_SESSION['shopkeeper_id'];
             color: var(--danger-color);
         }
 
-        /* Order summary */
+        /* ---------- Order Summary ---------- */
         .order-summary {
             background-color: white;
             border-radius: 8px;
@@ -194,67 +228,20 @@ $currentUser = $_SESSION['shopkeeper_id'];
             cursor: pointer;
             font-weight: 500;
         }
-    </style>
-    <style>
-        :root {
-            --primary: #09122c;
-            --primary-light: #ff8e8e;
-            --primary-dark: #596792;
-            --secondary: #11204be0;
-            --accent: #ffa502;
-            --dark: #2f3542;
-            --light: #f3f4f6;
-            --white: #ffffff;
-            --success: #2ed573;
-            --warning: #ffa502;
-            --danger: #ff4757;
-            --sidebar-width: 280px;
-        }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Montserrat", sans-serif;
-        }
-
-        body {
-            background-color: var(--light);
-            color: var(--dark);
-            min-height: 100vh;
-            overflow-x: hidden;
-
-        }
-
-        /* Dashboard Layout */
-        .dashboard {
-            display: flex;
-            min-height: 100vh;
-            transition: all 0.3s ease;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            margin-left: var(--sidebar-width);
-            padding: 2rem;
-            transition: all 0.3s ease;
-        }
-    </style>
-    <style>
-        /* Hide spinner arrows for Chrome, Safari, Edge, Opera */
+        /* ---------- Number Input Spinner Removal ---------- */
         input[type=number]::-webkit-inner-spin-button,
         input[type=number]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
 
-        /* Hide spinner arrows for Firefox */
         input[type=number] {
             -moz-appearance: textfield;
         }
     </style>
 </head>
+
 <?php
 
 error_reporting(E_ALL);        // Report all errors
@@ -284,9 +271,11 @@ $subTotal = 0;
 foreach ($products as $product) {
     $subTotal += ($product['price'] ?? 0) * ($product['quantity'] ?? 0);
 }
-$shipping = 40;
+$shipping = 0;
 $tax = round(($subTotal + 40) * 0.05, 2);
-$total = round(($subTotal + $shipping + $tax), 2);
+$totalFloting = round(($subTotal + $shipping + $tax), 2);
+$total = round($totalFloting);
+$roundsUp = round($total - $totalFloting, 2);
 ?>
 
 <body>
@@ -357,13 +346,17 @@ $total = round(($subTotal + $shipping + $tax), 2);
                         <span>Subtotal</span>
                         <span id="subtotal">₹ <?php echo $subTotal ?></span>
                     </div>
-                    <div class="summary-row">
+                    <!-- <div class="summary-row">
                         <span>Shipping</span>
                         <span id="shipping">₹ <?php echo $shipping ?></span>
-                    </div>
+                    </div> -->
                     <div class="summary-row">
                         <span>Tax (5%)</span>
                         <span id="tax">₹ <?php echo $tax ?></span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Rounds Up</span>
+                        <span id="roundsUp">₹ <?php echo $roundsUp ?></span>
                     </div>
                     <div class="summary-row summary-total">
                         <span>Total</span>
@@ -371,6 +364,7 @@ $total = round(($subTotal + $shipping + $tax), 2);
                     </div>
                     <form action="./src/order-submit.php" method="post">
                         <input hidden type="text" value="<?php echo $product['categoryCode'] ?>" name="categoryCode">
+                        <input hidden type="number" value="<?php echo $total ?>" name="total">
                         <button type="submit" class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
                     </form>
                 </div>

@@ -9,306 +9,28 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../Styling Area/forgotPass.css">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="auth.css">
 </head>
 <style>
-    :root {
-        --primary: #09122c;
-        --primary-light: #ff8e8e;
-        --primary-dark: #596792;
-        --secondary: #11204be0;
-        --accent: #ffa502;
-        --dark: #2f3542;
-        --light: #f1f2f6;
-        --white: #ffffff;
-        --success: #2ed573;
-        --warning: #ffa502;
-        --danger: #ff4757;
-    }
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Montserrat', sans-serif;
-    }
-
-    body {
-        min-height: 100vh;
-        background-color: var(--light);
-        overflow-x: hidden;
-    }
-
-    .password-container {
-        display: flex;
-        flex-direction: row;
-        min-height: 100vh;
-    }
-
-    /* Brand Side Styles */
-    .brand-side {
-        width: 40%;
-        background: black;
-        color: var(--white);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        overflow: hidden;
-        padding: 2rem;
-    }
-
-    .brand-content {
-        width: 100%;
-        max-width: 400px;
-        text-align: center;
-        z-index: 2;
-    }
-
-    .brand-side img {
-        width: 12rem;
-        margin-bottom: 10px;
-    }
-
-    /* Bottle Animation */
-    .bottle-animation {
-        margin: 2rem auto;
-        height: 250px;
-        display: flex;
-        justify-content: center;
-        align-items: flex-end;
-    }
-
-    .bottle {
-        width: 100px;
-        position: relative;
-        animation: gentle-shake 5s ease-in-out infinite;
-    }
-
-    .bottle-neck {
-        width: 30px;
-        height: 40px;
-        background: rgba(255, 255, 255, 0.8);
-        margin: 0 auto;
-        border-radius: 5px 5px 0 0;
-    }
-
-    .bottle-body {
-        width: 80px;
-        height: 180px;
-        background: rgba(255, 255, 255, 0.3);
-        margin: 0 auto;
-        border-radius: 5px 5px 0px 0px;
-        position: relative;
-        overflow: hidden;
-    }
-
+    /* Bottle Liquid Animation */
     .liquid {
-        position: absolute;
-        bottom: 0;
-        width: 100%;
         height: 30%;
         background: linear-gradient(to top, rgba(255, 107, 107, 0.7), rgba(255, 167, 107, 0.7));
-        transition: height 0.5s ease;
     }
 
-    .bubbles {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-    }
-
-    .bubble {
-        position: absolute;
-        width: 8px;
-        height: 8px;
-        background-color: rgba(255, 255, 255, 0.6);
-        border-radius: 50%;
-        bottom: 0;
-        animation: bubble-rise 4s infinite ease-in;
-    }
-
-    @keyframes bubble-rise {
-        0% {
-            transform: translateY(0);
-            opacity: 0;
-        }
-
-        20% {
-            opacity: 1;
-        }
-
-        100% {
-            transform: translateY(-180px);
-            opacity: 0;
-        }
-    }
-
-    .bottle-bottom {
-        width: 80px;
-        height: 10px;
-        background: rgba(255, 255, 255, 0.8);
-        margin: 0 auto;
-        border-radius: 0 0 5px 5px;
-    }
-
-    /* Gentle shake animation */
-    @keyframes gentle-shake {
-
-        0%,
-        100% {
-            transform: rotate(0deg);
-        }
-
-        20% {
-            transform: rotate(-3deg);
-            /* Slight left tilt */
-        }
-
-        40% {
-            transform: rotate(3deg);
-            /* Slight right tilt */
-        }
-
-        60% {
-            transform: rotate(-2deg);
-            /* Subtle left tilt */
-        }
-
-        80% {
-            transform: rotate(2deg);
-            /* Subtle right tilt */
-        }
-    }
-
-    .brand-message {
-        margin-top: 2rem;
-        font-size: 1.2rem;
-        font-weight: 600;
-    }
-
-    .floating-icons {
-        display: flex;
-        justify-content: center;
-        margin-top: 1rem;
-        gap: 1rem;
-        flex-wrap: wrap;
-    }
-
-    .floating-icons {
-        display: flex;
-        gap: 15px;
-        /* Spacing between icons */
-    }
-
-    .floating-icons i {
-        font-size: 1.5rem;
-        animation: float-wave 15s ease-in-out infinite;
-    }
-
-    /* Different delays for each icon */
-    .floating-icons i:nth-child(1) {
-        animation-delay: 0s;
-    }
-
-    .floating-icons i:nth-child(2) {
-        animation-delay: 0.5s;
-    }
-
-    .floating-icons i:nth-child(3) {
-        animation-delay: 1s;
-    }
-
-    .floating-icons i:nth-child(4) {
-        animation-delay: 1.5s;
-    }
-
-    /* Wave-like floating effect */
-    @keyframes float-wave {
-
-        0%,
-        100% {
-            transform: translateY(0);
-        }
-
-        25% {
-            transform: translateY(-15px);
-        }
-
-        50% {
-            transform: translateY(0);
-        }
-
-        75% {
-            transform: translateY(-10px);
-        }
-    }
-
-    /* Form Side Styles */
-    .form-side {
-        width: 60%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 2rem;
-        overflow-y: auto;
-    }
-
-    .password-form {
-        width: 100%;
-        max-width: 400px;
-    }
-
-    .form-title {
-        font-size: 2rem;
-        color: var(--dark);
-        margin-bottom: 0.5rem;
-        background: linear-gradient(90deg, var(--primary), var(--secondary));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .form-subtitle {
-        color: #666;
-        margin-bottom: 2rem;
-        font-size: 0.9rem;
-    }
+    /* =========================
+   Form Side
+========================= */
 
     .form-group {
-        position: relative;
         margin-bottom: 1.5rem;
     }
 
-    .input-with-icon {
-        position: relative;
-    }
-
-    .input-with-icon i {
-        position: absolute;
-        left: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--primary);
-    }
-
-    .input-with-icon input {
-        width: 100%;
-        padding: 0.8rem 1rem 0.8rem 2.8rem;
-        border: 2px solid #e0e0e0;
-        border-radius: 8px;
-        font-size: 0.9rem;
-        transition: all 0.3s ease;
-    }
-
-    .input-with-icon input:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
-        outline: none;
-    }
 
     .submit-btn {
         background: linear-gradient(90deg, var(--primary), var(--secondary));
-        color: white;
+        color: var(--white);
         border: none;
         padding: 0.9rem;
         border-radius: 8px;
@@ -380,7 +102,9 @@
         font-size: 0.9rem;
     }
 
-    /* Responsive Design */
+    /* =========================
+   Responsive
+========================= */
     @media (max-width: 1024px) {
         .password-container {
             flex-direction: column;
@@ -407,12 +131,6 @@
             height: 140px;
         }
 
-        .logo-circle {
-            width: 120px;
-            height: 120px;
-            margin-bottom: 1rem;
-        }
-
         .brand-message {
             margin-top: 1rem;
         }
@@ -435,14 +153,6 @@
 
         .bottle-bottom {
             width: 70px;
-        }
-
-        .logo-icon {
-            font-size: 2.5rem;
-        }
-
-        .logo-circle h1 {
-            font-size: 1.5rem;
         }
 
         .brand-message {
@@ -473,6 +183,19 @@
             height: 100px;
         }
 
+        .bottle-neck {
+            width: 20px;
+            height: 25px;
+        }
+
+        .bottle {
+            width: 70px;
+        }
+
+        .bottle-bottom {
+            width: 70px;
+        }
+
         .input-with-icon input {
             padding: 0.7rem 0.8rem 0.7rem 2.5rem;
             font-size: 0.85rem;
@@ -482,6 +205,22 @@
             padding: 0.8rem;
             font-size: 0.9rem;
         }
+
+        .form-title {
+            font-size: 1.5rem;
+        }
+
+        .brand-message {
+            font-size: 0.95rem;
+        }
+
+        .floating-icons i {
+            font-size: 1rem;
+        }
+
+        .success-message {
+            padding: 1rem;
+        }
     }
 </style>
 
@@ -490,7 +229,7 @@
         <!-- Left Side - Visual Branding -->
         <div class="brand-side">
             <div class="brand-content">
-                <img src="../../Asserts/Prime-Logo.png" alt="">
+                <img src="../Asserts/Prime-Logo.png" alt="Prime-Logo">
 
                 <div class="bottle-animation">
                     <div class="bottle">

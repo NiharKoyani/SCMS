@@ -99,7 +99,7 @@
         }
 
         .menu-item.active .menu-link {
-            font-weight: 600;
+            /* font-weight: 600; */
         }
 
         /* Responsive Design */
@@ -169,7 +169,7 @@
                 </a>
             </li>
             <li class="menu-item">
-                <a href="?logout" style="color: red;" class="menu-link">
+                <a href="./src/logout.php" style="color: red;" class="menu-link">
                     <i class="fas fa-users"></i>
                     <span>Log Out</span>
                 </a>
