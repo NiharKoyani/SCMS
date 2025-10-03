@@ -1,5 +1,7 @@
 <?php
 // include('./index.php');
+session_start();
+$shopkeeperId = $_SESSION['shopkeeper_id'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -628,6 +630,22 @@
     }
   }
 </style>
+<?php
+include('../Utility/db.php');
+$ordersId = [];
+$sql = "SELECT DISTINCT orderId FROM orders WHERE shopkeeper_id = ? ORDER BY created_at DESC";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $shopkeeperId);
+$stmt->execute();
+$result = $stmt->get_result();
+
+while ($row = $result->fetch_assoc()) {
+  $ordersId[] = $row['orderId'];
+}
+$stmt->close();
+
+$totalOrder = sizeof($ordersId);
+?>
 
 <body>
   <div class="bubbles-bg">
@@ -670,8 +688,8 @@
           </div>
           <div class="widget-value">₹ 1,28,450</div>
           <div class="widget-change change-up">
-            <i class="fas fa-arrow-up"></i>
-            <span>12.5% from last month</span>
+            <!-- <i class="fas fa-arrow-up"></i>
+            <span>12.5% from last month</span> -->
           </div>
         </div>
 
@@ -682,10 +700,10 @@
               <i class="fas fa-shopping-bag"></i>
             </div>
           </div>
-          <div class="widget-value">324</div>
+          <div class="widget-value"><?php echo $totalOrder ?></div>
           <div class="widget-change change-up">
-            <i class="fas fa-arrow-up"></i>
-            <span>8.3% from last month</span>
+            <!-- <i class="fas fa-arrow-up"></i>
+            <span>8.3% from last month</span> -->
           </div>
         </div>
 
@@ -719,7 +737,7 @@
       </div>
 
       <!-- Sales Chart -->
-      <div class="sales-chart">
+      <!-- <div class="sales-chart">
         <div class="chart-header">
           <h2 class="chart-title">Sales Overview</h2>
           <div class="chart-period">
@@ -729,13 +747,13 @@
             <button class="period-btn">Year</button>
           </div>
         </div>
-        <div class="chart-container">
+        <div class="chart-container"> -->
           <!-- Chart will be rendered here -->
-          <div style="width: 100%; height: 100%; background-color: #f8f9fa; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+          <!-- <div style="width: 100%; height: 100%; background-color: #f8f9fa; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
             <p style="color: #666;">Sales chart visualization</p>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Recent Orders -->
       <div class="recent-orders">

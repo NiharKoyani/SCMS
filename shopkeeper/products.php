@@ -247,7 +247,7 @@ if ($result && $result->num_rows > 0) {
         $total_item_in_cart += $row['quantity'];
     }
 }
-
+$_SESSION['total-item-in-cart'] = $total_item_in_cart;
 $conn->close();
 ?>
 

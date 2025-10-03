@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-// include('./index.php');
+session_start();
+$shopkeeperId = $_SESSION['shopkeeper_id'];
 ?>
 
 <head>
@@ -39,7 +40,6 @@
         }
 
         /* Reset and Base Styles */
-
         body {
             background-color: var(--light);
             color: var(--dark);
@@ -62,13 +62,7 @@
             transition: all 0.3s ease;
         }
 
-
-        /* ---------- Container & Header ---------- */
-        .container {
-            display: flex;
-            min-height: 100vh;
-        }
-
+        /* Header */
         .header {
             display: flex;
             justify-content: space-between;
@@ -96,19 +90,6 @@
             outline: none;
             flex: 1;
             padding: 4px;
-        }
-
-        /* Header */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            color: var(--text-color);
-            margin: 0;
         }
 
         /* Orders Container */
@@ -331,7 +312,6 @@
 
         /* Responsive Styles */
         @media (max-width: 900px) {
-
             .main-content {
                 margin-left: 80px;
             }
@@ -357,30 +337,29 @@
             }
         }
     </style>
-
 </head>
+
 <?php
-include('../Utility/db.php');
-$currentUser = $_SESSION['shopkeeper_id'];
+require_once('../Utility/db.php');
 
-$sql = "SELECT * FROM cart_items WHERE shopkeeper_id='$currentUser'";
-$result = $conn->query($sql);
+$ordersId = [];
+$sql = "SELECT DISTINCT orderId FROM orders WHERE shopkeeper_id = ? ORDER BY created_at DESC";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $shopkeeperId);
+$stmt->execute();
+$result = $stmt->get_result();
 
-$total_item_in_cart = 0;
-if ($result && $result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $total_item_in_cart += $row['quantity'];
-    }
+while ($row = $result->fetch_assoc()) {
+    $ordersId[] = $row['orderId'];
 }
 
-$conn->close();
+$stmt->close();
 ?>
 
 <body>
     <div class="dashboard">
         <!-- Sidebar -->
         <?php include('./src/sidebar.php'); ?>
-
 
         <!-- Main content -->
         <main class="main-content">
@@ -396,7 +375,7 @@ $conn->close();
                     <button class="notification-btn">
                         <a style="text-decoration: none; color:black; " href="./cart.php">
                             <i class="fa-solid fa-cart-shopping"></i>
-                            <span class="notification-badge"><?php echo $total_item_in_cart; ?></span>
+                            <span class="notification-badge"><?php echo $_SESSION['total-item-in-cart'] ?></span>
                         </a>
                     </button>
                     <button class="profile-btn">
@@ -407,15 +386,115 @@ $conn->close();
 
             <!-- Orders Container -->
             <div class="orders-container" id="ordersContainer">
-                <!-- Order cards will be inserted here by JavaScript -->
-            </div>
+                <?php if (empty($ordersId)): ?>
+                    <!-- Empty State -->
+                    <div class="empty-orders" id="emptyOrders">
+                        <i class="fas fa-shopping-bag"></i>
+                        <h3>No Orders Yet</h3>
+                        <p>You haven't placed any orders yet. Start shopping to see your orders here.</p>
+                        <button class="shop-btn" id="shopBtn">Start Shopping</button>
+                    </div>
+                <?php else: ?>
+                    <?php foreach ($ordersId as $orderId): 
+                        // Fetch products for this order
+                        $products = [];
+                        $productSql = "SELECT * FROM orders WHERE orderId = ? AND shopkeeper_id = ?";
+                        $productStmt = $conn->prepare($productSql);
+                        $productStmt->bind_param("si", $orderId, $shopkeeperId);
+                        $productStmt->execute();
+                        $productResult = $productStmt->get_result();
+                        while ($productRow = $productResult->fetch_assoc()) {
+                            $products[] = $productRow;
+                        }
+                        $productStmt->close();
 
-            <!-- Empty State (hidden by default) -->
-            <div class="empty-orders" id="emptyOrders" style="display: none;">
-                <i class="fas fa-shopping-bag"></i>
-                <h3>No Orders Yet</h3>
-                <p>You haven't placed any orders yet. Start shopping to see your orders here.</p>
-                <button class="shop-btn" id="shopBtn">Start Shopping</button>
+                        $dateTime = $products[0]['created_at'];
+                        $status = $products[0]['status'];
+                        $totalAmount = $products[0]['total'];
+
+                        // Format date and time
+                        list($date, $time) = explode(' ', $dateTime);
+                        $dateObj = DateTime::createFromFormat('Y-m-d', $date);
+                        $formattedDate = $dateObj ? $dateObj->format('d-m-Y') : $date;
+
+                        // Determine status class
+                        $statusClass = '';
+                        switch ($status) {
+                            case 'delivered':
+                                $statusClass = 'status-delivered';
+                                break;
+                            case 'processing':
+                                $statusClass = 'status-processing';
+                                break;
+                            case 'pending':
+                                $statusClass = 'status-pending';
+                                break;
+                            case 'cancelled':
+                                $statusClass = 'status-cancelled';
+                                break;
+                            default:
+                                $statusClass = 'status-pending';
+                        }
+                    ?>
+                        <div class="order-card" data-order-id="<?php echo $orderId; ?>">
+                            <div class="order-header">
+                                <div class="order-info">
+                                    <div class="order-detail">
+                                        <label>ORDER NUMBER</label>
+                                        <span class="order-id">#ORD-<?php echo $orderId; ?></span>
+                                    </div>
+                                    <div class="order-detail">
+                                        <label>DATE OF PLACED</label>
+                                        <span><?php echo $formattedDate; ?></span>
+                                    </div>
+                                    <div class="order-detail">
+                                        <label>TIME OF PLACED</label>
+                                        <span><?php echo $time; ?></span>
+                                    </div>
+                                    <div class="order-detail">
+                                        <label>STATUS</label>
+                                        <span class="status-badge <?php echo $statusClass; ?>">
+                                            <?php echo ucfirst($status); ?>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="order-items">
+                                <?php foreach ($products as $product): 
+                                    $productId = $product['product_id'];
+                                    $productDetails = [];
+                                    $productQuery = "SELECT * FROM products WHERE id = ?";
+                                    $productStmt = $conn->prepare($productQuery);
+                                    $productStmt->bind_param("i", $productId);
+                                    $productStmt->execute();
+                                    $productResult = $productStmt->get_result();
+                                    if ($productResult && $productResult->num_rows > 0) {
+                                        $productDetails = $productResult->fetch_assoc();
+                                    }
+                                    $productStmt->close();
+                                ?>
+                                    <div class="order-item">
+                                        <img src="<?php echo $productDetails['image'] ?? 'https://via.placeholder.com/60'; ?>" 
+                                             alt="<?php echo $productDetails['name'] ?? 'Product Image'; ?>" 
+                                             class="item-image">
+                                        <div class="item-details">
+                                            <div class="item-name"><?php echo $productDetails['name'] ?? 'Product Name'; ?></div>
+                                            <div class="item-price">₹ <?php echo $productDetails['price'] ?? '0'; ?></div>
+                                        </div>
+                                        <div class="item-quantity">Qty: <?php echo $product['quantity']; ?></div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                            <div class="order-footer">
+                                <div class="order-total">Total: ₹ <?php echo $totalAmount; ?></div>
+                                <button class="reorder-btn" <?php echo $status === 'cancelled' ? 'disabled' : ''; ?>>
+                                    <i class="fas fa-redo-alt"></i>
+                                    Re-order
+                                </button>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
             </div>
         </main>
     </div>
@@ -427,176 +506,12 @@ $conn->close();
     </div>
 
     <script>
-        fetch('./src/recent-orders.php')
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-            });
-
         document.addEventListener('DOMContentLoaded', function() {
             // DOM Elements
             const ordersContainer = document.getElementById('ordersContainer');
-            const emptyOrders = document.getElementById('emptyOrders');
-            const shopBtn = document.getElementById('shopBtn');
             const toast = document.getElementById('toast');
             const toastMessage = document.getElementById('toastMessage');
-
-            // Sample order data
-            // const orders = [{
-            //         id: 'ORD-7842',
-            //         date: '12 Aug 2023',
-            //         status: 'delivered',
-            //         total: 3842,
-            //         items: [{
-            //                 name: 'Wireless Headphones Pro',
-            //                 price: 1299,
-            //                 quantity: 2,
-            //                 image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-            //             },
-            //             {
-            //                 name: 'Phone Case',
-            //                 price: 499,
-            //                 quantity: 1,
-            //                 image: 'https://images.unsplash.com/photo-1601593346740-9e21c0c1c199?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-            //             }
-            //         ]
-            //     },
-            //     {
-            //         id: 'ORD-7841',
-            //         date: '10 Aug 2023',
-            //         status: 'processing',
-            //         total: 2156,
-            //         items: [{
-            //             name: 'Smart Watch X3',
-            //             price: 3499,
-            //             quantity: 1,
-            //             image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-            //         }]
-            //     },
-            //     {
-            //         id: 'ORD-7840',
-            //         date: '5 Aug 2023',
-            //         status: 'delivered',
-            //         total: 5743,
-            //         items: [{
-            //                 name: 'Portable Bluetooth Speaker',
-            //                 price: 899,
-            //                 quantity: 3,
-            //                 image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-            //             },
-            //             {
-            //                 name: 'USB-C Cable',
-            //                 price: 299,
-            //                 quantity: 2,
-            //                 image: 'https://images.unsplash.com/photo-1583394838336-acd977736f90?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-            //             }
-            //         ]
-            //     },
-            //     {
-            //         id: 'ORD-7839',
-            //         date: '1 Aug 2023',
-            //         status: 'cancelled',
-            //         total: 1299,
-            //         items: [{
-            //             name: 'Luxury Perfume 50ml',
-            //             price: 1799,
-            //             quantity: 1,
-            //             image: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'
-            //         }]
-            //     }
-            // ];
-
-            // Initialize the page
-            function init() {
-                renderOrders();
-                setupEventListeners();
-            }
-
-            // Render orders
-            function renderOrders() {
-                if (orders.length === 0) {
-                    ordersContainer.style.display = 'none';
-                    emptyOrders.style.display = 'block';
-                    return;
-                }
-
-                ordersContainer.innerHTML = '';
-
-                orders.forEach(order => {
-                    const orderCard = document.createElement('div');
-                    orderCard.className = 'order-card';
-                    orderCard.dataset.id = order.id;
-
-                    // Get status badge class
-                    let statusClass = '';
-                    let statusText = '';
-
-                    switch (order.status) {
-                        case 'delivered':
-                            statusClass = 'status-delivered';
-                            statusText = 'Delivered';
-                            break;
-                        case 'processing':
-                            statusClass = 'status-processing';
-                            statusText = 'Processing';
-                            break;
-                        case 'pending':
-                            statusClass = 'status-pending';
-                            statusText = 'Pending';
-                            break;
-                        case 'cancelled':
-                            statusClass = 'status-cancelled';
-                            statusText = 'Cancelled';
-                            break;
-                    }
-
-                    // Create order items HTML
-                    let itemsHTML = '';
-                    order.items.forEach(item => {
-                        itemsHTML += `
-                            <div class="order-item">
-                                <img src="${item.image}" alt="${item.name}" class="item-image">
-                                <div class="item-details">
-                                    <div class="item-name">${item.name}</div>
-                                    <div class="item-price">₹${item.price.toLocaleString('en-IN')}</div>
-                                </div>
-                                <div class="item-quantity">Qty: ${item.quantity}</div>
-                            </div>
-                        `;
-                    });
-
-                    orderCard.innerHTML = `
-                        <div class="order-header">
-                            <div class="order-info">
-                                <div class="order-detail">
-                                    <label>ORDER NUMBER</label>
-                                    <span class="order-id">${order.id}</span>
-                                </div>
-                                <div class="order-detail">
-                                    <label>DATE PLACED</label>
-                                    <span>${order.date}</span>
-                                </div>
-                                <div class="order-detail">
-                                    <label>STATUS</label>
-                                    <span class="status-badge ${statusClass}">${statusText}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="order-items">
-                            ${itemsHTML}
-                        </div>
-                        <div class="order-footer">
-                            <div class="order-total">Total: ₹${order.total.toLocaleString('en-IN')}</div>
-                            <button class="reorder-btn" ${order.status === 'cancelled' ? 'disabled' : ''}>
-                                <i class="fas fa-redo-alt"></i>
-                                Re-order
-                            </button>
-                        </div>
-                    `;
-
-                    ordersContainer.appendChild(orderCard);
-                });
-            }
+            const shopBtn = document.getElementById('shopBtn');
 
             // Show toast notification
             function showToast(message) {
@@ -618,7 +533,7 @@ $conn->close();
                         if (reorderBtn.disabled) return;
 
                         const orderCard = reorderBtn.closest('.order-card');
-                        const orderId = orderCard.dataset.id;
+                        const orderId = orderCard.dataset.orderId;
 
                         // In a real app, this would add items to cart
                         showToast('Items from order ' + orderId + ' have been added to your cart!');
@@ -635,16 +550,17 @@ $conn->close();
                 });
 
                 // Shop button
-                shopBtn.addEventListener('click', function() {
-                    // In a real app, this would navigate to shop
-                    alert('Navigating to shop...');
-                });
+                if (shopBtn) {
+                    shopBtn.addEventListener('click', function() {
+                        // In a real app, this would navigate to shop
+                        alert('Navigating to shop...');
+                    });
+                }
             }
 
             // Initialize the app
-            init();
+            setupEventListeners();
         });
     </script>
 </body>
-
 </html>
