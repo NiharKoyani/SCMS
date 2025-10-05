@@ -9,9 +9,10 @@ $shopkeeperId = $_SESSION['shopkeeper_id'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Orders - User Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="main.css">
-    <link rel="stylesheet" href="top-nav.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../styles/top-nav.css">
     <style>
         /* CSS Variables */
         :root {
@@ -340,7 +341,7 @@ $shopkeeperId = $_SESSION['shopkeeper_id'];
 </head>
 
 <?php
-require_once('../Utility/db.php');
+require_once('../../Utility/db.php');
 
 $ordersId = [];
 $sql = "SELECT DISTINCT orderId FROM orders WHERE shopkeeper_id = ? ORDER BY created_at DESC";
@@ -359,7 +360,7 @@ $stmt->close();
 <body>
     <div class="dashboard">
         <!-- Sidebar -->
-        <?php include('./src/sidebar.php'); ?>
+        <?php include('../util/sidebar.php'); ?>
 
         <!-- Main content -->
         <main class="main-content">
@@ -395,7 +396,7 @@ $stmt->close();
                         <button class="shop-btn" id="shopBtn">Start Shopping</button>
                     </div>
                 <?php else: ?>
-                    <?php foreach ($ordersId as $orderId): 
+                    <?php foreach ($ordersId as $orderId):
                         // Fetch products for this order
                         $products = [];
                         $productSql = "SELECT * FROM orders WHERE orderId = ? AND shopkeeper_id = ?";
@@ -460,7 +461,7 @@ $stmt->close();
                                 </div>
                             </div>
                             <div class="order-items">
-                                <?php foreach ($products as $product): 
+                                <?php foreach ($products as $product):
                                     $productId = $product['product_id'];
                                     $productDetails = [];
                                     $productQuery = "SELECT * FROM products WHERE id = ?";
@@ -474,9 +475,9 @@ $stmt->close();
                                     $productStmt->close();
                                 ?>
                                     <div class="order-item">
-                                        <img src="<?php echo $productDetails['image'] ?? 'https://via.placeholder.com/60'; ?>" 
-                                             alt="<?php echo $productDetails['name'] ?? 'Product Image'; ?>" 
-                                             class="item-image">
+                                        <img src="<?php echo $productDetails['image'] ?? 'https://via.placeholder.com/60'; ?>"
+                                            alt="<?php echo $productDetails['name'] ?? 'Product Image'; ?>"
+                                            class="item-image">
                                         <div class="item-details">
                                             <div class="item-name"><?php echo $productDetails['name'] ?? 'Product Name'; ?></div>
                                             <div class="item-price">₹ <?php echo $productDetails['price'] ?? '0'; ?></div>
@@ -563,4 +564,5 @@ $stmt->close();
         });
     </script>
 </body>
+
 </html>

@@ -6,3 +6,4 @@ if (isset($_SESSION['shopkeeper_id'])) {
 } else {
     header('location: ./home.php');
 }
+?>

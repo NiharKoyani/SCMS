@@ -18,6 +18,5 @@ if ($stmt->execute()) {
 $stmt->close();
 $conn->close();
 
-header("Location: ../cart.php");
+header("Location: ../pages/cart.php");
 exit();
-?>

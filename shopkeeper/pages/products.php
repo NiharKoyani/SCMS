@@ -12,8 +12,8 @@ $currentUser = $_SESSION['shopkeeper_id'];
     <title>Purchase Products - Vendor Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="main.css">
-    <link rel="stylesheet" href="top-nav.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../styles/top-nav.css">
 
     <style>
         /* ---------- CSS Variables ---------- */
@@ -253,7 +253,7 @@ $conn->close();
 
 <body>
     <div class="dashboard">
-        <?php include('./src/sidebar.php'); ?>
+        <?php include('../util/sidebar.php'); ?>
         <main class="main-content">
             <!-- Main content -->
             <!-- Top Navigation -->
@@ -289,7 +289,7 @@ $conn->close();
             <!-- Products grid -->
             <div class="products-grid">
                 <?php foreach ($products as $product) : ?>
-                    <form class="product-card" action="./src/add_to_cart.php" method="post" autocomplete="off">
+                    <form class="product-card" action="../server/add-to-cart.php" method="post" autocomplete="off">
                         <input hidden type="number" name="id" value="<?php echo $product['id']  ?>">
                         <input hidden type="text" name="categoryCode" value="<?php echo $product['categoryCode']  ?>">
                         <img src="<?php echo htmlspecialchars($product['image'] ?? ''); ?>" alt="<?php echo htmlspecialchars($product['title'] ?? ''); ?>" class="product-image">

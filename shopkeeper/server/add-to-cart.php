@@ -43,7 +43,7 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param("iiis", $shopkeeperId, $productId, $userQuantity, $categoryCode);
 
 if ($stmt->execute()) {
-    header('Location: ../cart.php');
+    header('Location: ../pages/cart.php');
 } else {
     echo "Error: " . $stmt->error;
 }

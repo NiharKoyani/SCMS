@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recent Orders - Vendor Dashboard</title>
+    <title>Recent Orders - Admin Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -33,55 +33,6 @@
         .container {
             display: flex;
             min-height: 100vh;
-        }
-        
-        /* Sidebar styling */
-        .sidebar {
-            width: 260px;
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-        }
-        
-        .sidebar h2 {
-            color: var(--primary-color);
-            margin-bottom: 30px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 1.5rem;
-        }
-        
-        .sidebar ul {
-            list-style: none;
-        }
-        
-        .sidebar li {
-            margin-bottom: 8px;
-        }
-        
-        .sidebar a {
-            text-decoration: none;
-            color: var(--text-color);
-            display: flex;
-            align-items: center;
-            padding: 10px 12px;
-            border-radius: 6px;
-            transition: all 0.2s;
-            font-weight: 500;
-        }
-        
-        .sidebar a:hover, .sidebar a.active {
-            background-color: var(--secondary-color);
-            color: var(--primary-color);
-        }
-        
-        .sidebar a i {
-            margin-right: 12px;
-            width: 20px;
-            text-align: center;
         }
         
         /* Main content area */
@@ -335,19 +286,6 @@
         }
         
         @media (max-width: 900px) {
-            .sidebar {
-                width: 80px;
-                padding: 15px 10px;
-            }
-            
-            .sidebar h2, .sidebar a span {
-                display: none;
-            }
-            
-            .sidebar a i {
-                margin-right: 0;
-                font-size: 1.2rem;
-            }
             
             .main-content {
                 margin-left: 80px;
@@ -374,20 +312,9 @@
 </head>
 <body>
     <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <h2>Vendor Dashboard</h2>
-            <ul>
-                <li><a href="#"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
-                <li><a href="#"><i class="fas fa-box"></i> <span>Products</span></a></li>
-                <li><a href="#" class="active"><i class="fas fa-shopping-cart"></i> <span>Orders</span></a></li>
-                <li><a href="#"><i class="fas fa-chart-line"></i> <span>Analytics</span></a></li>
-                <li><a href="#"><i class="fas fa-store"></i> <span>My Shop</span></a></li>
-                <li><a href="#"><i class="fas fa-users"></i> <span>Customers</span></a></li>
-                <li><a href="#"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
-            </ul>
-        </div>
-        
+
+        <!-- sidebar will be implement later -->
+
         <!-- Main content -->
         <div class="main-content">
             <div class="header">

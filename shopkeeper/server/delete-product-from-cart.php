@@ -13,6 +13,6 @@ if (isset($_GET['remove'])) {
     $sql = "DELETE FROM cart_items WHERE shopkeeper_id=$currentUser AND product_id=$Id";
     $result = $conn->query($sql);
 }
-header("Location: ../cart.php");
+header("Location: ../pages/cart.php");
 exit();
 ?>

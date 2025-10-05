@@ -2,6 +2,7 @@
 // include('./index.php');
 session_start();
 $shopkeeperId = $_SESSION['shopkeeper_id'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +14,7 @@ $shopkeeperId = $_SESSION['shopkeeper_id'];
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="./Styling Area/dashboard.css">
-  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="../../styles/main.css">
 </head>
 <style>
   /* =========================
@@ -631,7 +632,7 @@ $shopkeeperId = $_SESSION['shopkeeper_id'];
   }
 </style>
 <?php
-include('../Utility/db.php');
+include('../../Utility/db.php');
 $ordersId = [];
 $sql = "SELECT DISTINCT orderId FROM orders WHERE shopkeeper_id = ? ORDER BY created_at DESC";
 $stmt = $conn->prepare($sql);
@@ -654,7 +655,7 @@ $totalOrder = sizeof($ordersId);
 
   <div class="dashboard">
     <!-- Sidebar -->
-    <?php include('./src/sidebar.php') ?>
+    <?php include('../util/sidebar.php') ?>
 
     <!-- Main Content -->
     <main class="main-content">
@@ -748,8 +749,8 @@ $totalOrder = sizeof($ordersId);
           </div>
         </div>
         <div class="chart-container"> -->
-          <!-- Chart will be rendered here -->
-          <!-- <div style="width: 100%; height: 100%; background-color: #f8f9fa; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+      <!-- Chart will be rendered here -->
+      <!-- <div style="width: 100%; height: 100%; background-color: #f8f9fa; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
             <p style="color: #666;">Sales chart visualization</p>
           </div>
         </div>

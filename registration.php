@@ -11,12 +11,11 @@ session_start();
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="main.css">
-    <link rel="stylesheet" href="auth.css">
+    <link rel="stylesheet" href="./styles/main.css">
+    <link rel="stylesheet" href="./styles/auth.css">
 </head>
 <style>
-
-/* Bottle Liquid Animation */
+    /* Bottle Liquid Animation */
     .liquid {
         height: 30%;
         background: linear-gradient(to top, rgba(255, 107, 107, 0.7), rgba(255, 167, 107, 0.7));
@@ -74,7 +73,7 @@ session_start();
         text-decoration: underline;
     }
 
-    
+
 
     /* Footer Links */
     .form-footer {
@@ -249,7 +248,7 @@ session_start();
 
         <!-- Right Side - Registration Form -->
         <div class="form-side">
-            <form id="registrationForm" action="./src/Process.php" method="POST" class="compact-form">
+            <form id="registrationForm" action="./shopkeeper/server/Process.php" method="POST" class="compact-form">
                 <h2 class="form-title">Vendor Registration</h2>
                 <p class="form-subtitle">Fill your details to get started</p>
 
@@ -258,7 +257,7 @@ session_start();
                     <div class="form-group shop-name">
                         <div class="input-with-icon">
                             <i class="fas fa-store"></i>
-                            <input onchange="handelOnChange()" type="text" id="shopName" name="shopName" required placeholder="Shop Name">
+                            <input type="text" id="shopName" name="shopName" required placeholder="Shop Name">
                         </div>
                     </div>
 

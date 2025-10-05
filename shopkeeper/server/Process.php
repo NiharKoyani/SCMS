@@ -1,14 +1,14 @@
 <?php
-
-error_reporting(E_ALL);        // Report all errors
+error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
-include('../../Utility/db.php');
 session_start();
+include('../../Utility/db.php');
 
 // Process form data when form is submitted
-if (isset($_POST['submit'])) {
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    if (isset($_POST['submit'])) {
         // Validate and sanitize input data
         $shopName = htmlspecialchars(trim($_POST['shopName']));
         $ownerName = htmlspecialchars(trim($_POST['ownerName']));
@@ -22,7 +22,7 @@ if (isset($_POST['submit'])) {
             die("Invalid email format");
         }
 
-        // Check if passwords match (client-side should handle this, but double-check)
+        // Check if passwords match
         if ($_POST['password'] !== $_POST['confirmPassword']) {
             die("Passwords do not match");
         }
@@ -58,60 +58,59 @@ if (isset($_POST['submit'])) {
         $checkStmt->close();
 
         // Prepare and bind
-        $stmt = $conn->prepare("INSERT INTO shopkeeper (shop_name, owner_name, mobile_number, email, password, shop_location, created_at, Status) VALUES (?, ?, ?, ?, ?, ?, NOW(),0)");
+        $stmt = $conn->prepare("INSERT INTO shopkeeper (shop_name, owner_name, mobile_number, email, password, shop_location, created_at, Status) VALUES (?, ?, ?, ?, ?, ?, NOW(), 0)");
         $stmt->bind_param("ssssss", $shopName, $ownerName, $mobile, $email, $hashedPassword, $shopAddress);
 
         // Execute the statement
         if ($stmt->execute()) {
             // Registration successful - redirect to success page
-            header("Location: ../registration_sucess.php");
+            header("Location: ../pages/registration_sucess.php");
             exit();
         } else {
             echo "Error: " . $stmt->error;
         }
-    }
-    // Close statement
-    $stmt->close();
-} else if (isset($_POST['login'])) {
 
-    // Process login
-    $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
-    $password = trim($_POST['password']);
+        // Close statement
+        $stmt->close();
+    } else if (isset($_POST['login'])) {
 
-    // Validate email
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        die("Invalid email format");
-    }
+        // Process login
+        $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
+        $password = trim($_POST['password']);
 
-    // Prepare statement to fetch user
-    $stmt = $conn->prepare("SELECT id, password FROM shopkeeper WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $stmt->store_result();
+        // Validate email
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            die("Invalid email format");
+        }
 
-    if ($stmt->num_rows == 1) {
-        $stmt->bind_result($userId, $hashedPassword);
-        $stmt->fetch();
-        if (password_verify($password, $hashedPassword)) {
-            // Login successful
-            $_SESSION['shopkeeper_id'] = $userId;
-            header("Location: ../dashboard.php?dashboard");
-            exit();
+        // Prepare statement to fetch user
+        $stmt = $conn->prepare("SELECT id, password FROM shopkeeper WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows == 1) {
+            $stmt->bind_result($userId, $hashedPassword);
+            $stmt->fetch();
+
+            if (password_verify($password, $hashedPassword)) {
+                // Login successful
+                $_SESSION['shopkeeper_id'] = $userId;
+                header("Location: ../pages/dashboard.php?dashboard");
+                exit();
+            } else {
+                $_SESSION['login_error'] = "Invalid password.";
+                header("Location: ../../login.php");
+                exit();
+            }
         } else {
-            $_SESSION['login_error'] = "Invalid password.";
-            header("Location: ./login.php");
+            $_SESSION['login_error'] = "No user found with this email.";
+            header("Location: ../../login.php");
             exit();
         }
-    } else {
-        $_SESSION['login_error'] = "No user found with this email.";
-        header("Location: ./login.php");
-        exit();
+        $stmt->close();
     }
-    $stmt->close();
 }
 
 // Close connection
 $conn->close();
-
-?>
-<form action=""></form>

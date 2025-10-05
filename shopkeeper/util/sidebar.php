@@ -5,6 +5,8 @@
         session_unset();
         session_destroy();
     }
+    $logo = "../../Asserts/Prime-Logo.png";
+
     ?>
     <!-- <link rel="stylesheet" href=""> -->
     <style>
@@ -127,7 +129,7 @@
     <aside class="sidebar">
         <div class="sidebar-header">
             <div class="logo">
-                <img style="width: 14rem;" src="../Asserts/Prime-Logo.png" alt="">
+                <img style="width: 14rem;" src=<?php echo $logo ?> alt="">
             </div>
         </div>
 
