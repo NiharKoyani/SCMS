@@ -430,13 +430,31 @@ $roundsUp = round($total - $totalFloting, 2);
     <script>
         // Quantity controls
         document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.quantity-control').forEach(function(control) {
-                const minusBtn = control.querySelector('.quantity-btn:first-child');
-                const plusBtn = control.querySelector('.quantity-btn:last-child');
-                const input = control.querySelector('.quantity-input');
+            document.querySelectorAll('#cartItems').forEach(function(card) {
+                const minusBtn = card.querySelector('.quantity-btn:first-child');
+                const plusBtn = card.querySelector('.quantity-btn:last-child');
+                const input = card.querySelector('.quantity-input');
+                const price = card.querySelector('#price');
+                console.log(price);
 
                 const max = parseInt(input.getAttribute('max')) || 51;
                 const min = parseInt(input.getAttribute('min')) || 6;
+
+                minusBtn.addEventListener('click', function() {
+                    let value = parseInt(input.value) || min;
+                    if (value > min) input.value = value - 1;
+                });
+
+                plusBtn.addEventListener('click', function() {
+                    let value = parseInt(input.value) || min;
+                    if (value < max) input.value = value + 1;
+                });
+
+                input.addEventListener('input', function() {
+                    let value = parseInt(input.value) || min;
+                    if (value < min) input.value = min;
+                    if (value > max) input.value = max;
+                });
 
             });
         });
