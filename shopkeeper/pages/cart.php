@@ -340,125 +340,128 @@ $roundsUp = round($total - $totalFloting, 2);
                 </a>
             </div>
 
-            <!-- Cart Items -->
-            <!-- Replace the entire table section with this -->
-            <div class="cart-table" id="cartTable">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Subtotal</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="cartItems">
-                        <?php foreach ($products as $product) : ?>
-                            <tr>
-                                <td>
-                                    <div class="product-info">
-                                        <img src="<?php echo htmlspecialchars($product['image'] ?? ''); ?>" alt="<?php echo htmlspecialchars($product['name'] ?? ''); ?>" class="product-img">
-                                        <span><?php echo htmlspecialchars($product['name'] ?? ''); ?></span>
-                                    </div>
-                                </td>
-                                <td>₹<?php echo htmlspecialchars($product['price'] ?? ''); ?></td>
-                                <td>
-                                    <form action="../server/update-cart.php" method="POST" style="display: inline;">
-                                        <input type="number" hidden value="<?php echo htmlspecialchars($product['id'] ?? ''); ?>" name="productId">
-                                        <input type="number" hidden value="<?php echo $_SESSION['shopkeeper_id'] ?>" name="shopkeeper_id">
-                                        <div class="quantity-control">
-                                            <button type="submit" class="quantity-btn" name="action" value="decrease">-</button>
-                                            <input type="number" class="quantity-input" value="<?php echo htmlspecialchars($product['quantity'] ?? ''); ?>" name="quantity" min="6" max="51" readonly>
-                                            <button type="submit" class="quantity-btn" name="action" value="increase">+</button>
-                                        </div>
-                                    </form>
-                                </td>
-                                <td class="item-subtotal">₹<?php echo htmlspecialchars($product['price'] * $product['quantity']); ?></td>
-                                <td>
-                                    <a href="../server/delete-product-from-cart.php?remove=<?php echo $product['productId'] ?>" class="remove-btn">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
-                                    </a>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            </div>
+            <?php if (count($products) > 0) { ?>
 
-            <!-- Order Summary -->
-            <div class="order-summary" id="orderSummary">
-                <h3>Order Summary</h3>
-                <div class="summary-row">
-                    <span>Subtotal</span>
-                    <span id="subtotal">₹ <?php echo $subTotal ?></span>
+                <!-- Cart Items -->
+                <!-- Replace the entire table section with this -->
+                <div class="cart-table" id="cartTable">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Subtotal</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="cartItems">
+                            <?php foreach ($products as $product) : ?>
+                                <tr>
+                                    <td>
+                                        <div class="product-info">
+                                            <img src="<?php echo htmlspecialchars($product['image'] ?? ''); ?>" alt="<?php echo htmlspecialchars($product['name'] ?? ''); ?>" class="product-img">
+                                            <span><?php echo htmlspecialchars($product['name'] ?? ''); ?></span>
+                                        </div>
+                                    </td>
+                                    <td>₹<?php echo htmlspecialchars($product['price'] ?? ''); ?></td>
+                                    <td>
+                                        <form action="../server/update-cart.php" method="POST" style="display: inline;">
+                                            <input type="number" hidden value="<?php echo htmlspecialchars($product['id'] ?? ''); ?>" name="productId">
+                                            <input type="number" hidden value="<?php echo $_SESSION['shopkeeper_id'] ?>" name="shopkeeper_id">
+                                            <div class="quantity-control">
+                                                <button type="submit" class="quantity-btn" name="action" value="decrease">-</button>
+                                                <input type="number" class="quantity-input" value="<?php echo htmlspecialchars($product['quantity'] ?? ''); ?>" name="quantity" min="6" max="51" readonly>
+                                                <button type="submit" class="quantity-btn" name="action" value="increase">+</button>
+                                            </div>
+                                        </form>
+                                    </td>
+                                    <td class="item-subtotal">₹<?php echo htmlspecialchars($product['price'] * $product['quantity']); ?></td>
+                                    <td>
+                                        <a href="../server/delete-product-from-cart.php?remove=<?php echo $product['productId'] ?>" class="remove-btn">
+                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
                 </div>
-                <!-- <div class="summary-row">
+
+                <!-- Order Summary -->
+                <div class="order-summary" id="orderSummary">
+                    <h3>Order Summary</h3>
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="subtotal">₹ <?php echo $subTotal ?></span>
+                    </div>
+                    <!-- <div class="summary-row">
                         <span>Shipping</span>
                         <span id="shipping">₹ <?php echo $shipping ?></span>
                     </div> -->
-                <div class="summary-row">
-                    <span>Tax (5%)</span>
-                    <span id="tax">₹ <?php echo $tax ?></span>
+                    <div class="summary-row">
+                        <span>Tax (5%)</span>
+                        <span id="tax">₹ <?php echo $tax ?></span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Rounds Up</span>
+                        <span id="roundsUp">₹ <?php echo $roundsUp ?></span>
+                    </div>
+                    <div class="summary-row summary-total">
+                        <span>Total</span>
+                        <span id="total">₹ <?php echo $total ?></span>
+                    </div>
+                    <form action="../server/checkout.php" method="post">
+                        <input hidden type="text" value="<?php echo $product['categoryCode'] ?>" name="categoryCode">
+                        <input hidden type="number" value="<?php echo $total ?>" name="total">
+                        <button type="submit" class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+                    </form>
                 </div>
-                <div class="summary-row">
-                    <span>Rounds Up</span>
-                    <span id="roundsUp">₹ <?php echo $roundsUp ?></span>
-                </div>
-                <div class="summary-row summary-total">
-                    <span>Total</span>
-                    <span id="total">₹ <?php echo $total ?></span>
-                </div>
-                <form action="./src/order-submit.php" method="post">
-                    <input hidden type="text" value="<?php echo $product['categoryCode'] ?>" name="categoryCode">
-                    <input hidden type="number" value="<?php echo $total ?>" name="total">
-                    <button type="submit" class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
-                </form>
-            </div>
     </div>
-
+<?php } else { ?>
     <!-- Empty Cart State -->
     <div class="empty-cart" id="emptyCart" style="display: <?php echo count($products) > 0 ? 'none' : null ?>;">
         <h3>Your Cart is Empty</h3>
         <p>You haven't added any products to your purchase cart yet.</p>
         <a href='./products.php'><button class="shop-btn" id="shopBtn">Browse Products</button></a>
     </div>
-    </main>
-    </div>
-    <script>
-        // Quantity controls
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('#cartItems').forEach(function(card) {
-                const minusBtn = card.querySelector('.quantity-btn:first-child');
-                const plusBtn = card.querySelector('.quantity-btn:last-child');
-                const input = card.querySelector('.quantity-input');
-                const price = card.querySelector('#price');
-                console.log(price);
+<?php } ?>
+</main>
+</div>
+<script>
+    // Quantity controls
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('#cartItems').forEach(function(card) {
+            const minusBtn = card.querySelector('.quantity-btn:first-child');
+            const plusBtn = card.querySelector('.quantity-btn:last-child');
+            const input = card.querySelector('.quantity-input');
+            const price = card.querySelector('#price');
+            console.log(price);
 
-                const max = parseInt(input.getAttribute('max')) || 51;
-                const min = parseInt(input.getAttribute('min')) || 6;
+            const max = parseInt(input.getAttribute('max')) || 51;
+            const min = parseInt(input.getAttribute('min')) || 6;
 
-                minusBtn.addEventListener('click', function() {
-                    let value = parseInt(input.value) || min;
-                    if (value > min) input.value = value - 1;
-                });
-
-                plusBtn.addEventListener('click', function() {
-                    let value = parseInt(input.value) || min;
-                    if (value < max) input.value = value + 1;
-                });
-
-                input.addEventListener('input', function() {
-                    let value = parseInt(input.value) || min;
-                    if (value < min) input.value = min;
-                    if (value > max) input.value = max;
-                });
-
+            minusBtn.addEventListener('click', function() {
+                let value = parseInt(input.value) || min;
+                if (value > min) input.value = value - 1;
             });
+
+            plusBtn.addEventListener('click', function() {
+                let value = parseInt(input.value) || min;
+                if (value < max) input.value = value + 1;
+            });
+
+            input.addEventListener('input', function() {
+                let value = parseInt(input.value) || min;
+                if (value < min) input.value = min;
+                if (value > max) input.value = max;
+            });
+
         });
-    </script>
+    });
+</script>
 </body>
 
 </html>

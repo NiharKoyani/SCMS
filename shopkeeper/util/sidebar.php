@@ -154,20 +154,8 @@
             </li>
             <li class="menu-item <?php echo basename($_SERVER['PHP_SELF']) === '' ? 'active' : null ?>">
                 <a href="#" class="menu-link">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Analytics</span>
-                </a>
-            </li>
-            <li class="menu-item <?php echo basename($_SERVER['PHP_SELF']) === '' ? 'active' : null ?>">
-                <a href="#" class="menu-link">
                     <i class="fas fa-store"></i>
                     <span>My Shop</span>
-                </a>
-            </li>
-            <li class="menu-item <?php echo basename($_SERVER['PHP_SELF']) === '' ? 'active' : null ?>">
-                <a href="#" class="menu-link">
-                    <i class="fas fa-cog"></i>
-                    <span>Settings</span>
                 </a>
             </li>
             <li class="menu-item">
