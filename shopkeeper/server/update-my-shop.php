@@ -1,47 +1,33 @@
 <?php
 // update-my-shop.php
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
 
+session_start();
 // Database connection
-$host = 'localhost';
-$user = 'root';
-$pass = '';
-$dbname = 'scms';
+require_once('../../Utility/db.php');
 
-$conn = new mysqli($host, $user, $pass, $dbname);
-if ($conn->connect_error) {
-    http_response_code(500);
-    echo json_encode(['error' => 'Database connection failed']);
-    exit;
-}
-
-// Get JSON input
-$data = json_decode(file_get_contents('php://input'), true);
-
-// Validate required fields
-$required = ['shop_id', 'shop_name', 'address', 'phone', 'email'];
-foreach ($required as $field) {
-    if (empty($data[$field])) {
-        http_response_code(400);
-        echo json_encode(['error' => "Missing field: $field"]);
-        exit;
-    }
-}
+$shop_name = $_POST['shop_name'];
+$shop_location = $_POST['shop_location'];
+$mobile_number = $_POST['mobile_number'];
+$email = $_POST['email'];
+$shop_id = $_SESSION['shopkeeper_id'];
 
 // Prepare and execute update
 $stmt = $conn->prepare("UPDATE shopkeeper SET shop_name=?, shop_location=?, mobile_number=?, email=? WHERE id=?");
 $stmt->bind_param(
     "ssssi",
-    $data['shop_name'],
-    $data['address'],
-    $data['phone'],
-    $data['email'],
-    $data['shop_id']
+    $shop_name,
+    $shop_location,
+    $mobile_number,
+    $email,
+    $shop_id,
 );
 
 if ($stmt->execute()) {
-    echo json_encode(['success' => true]);
+    $_SESSION['my-shop'] = 'Profile updated successfully!';
+    header('Location: ../pages/my-shop.php');
 } else {
-    http_response_code(500);
     echo json_encode(['error' => 'Update failed']);
 }
 

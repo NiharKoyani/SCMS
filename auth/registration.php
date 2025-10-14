@@ -11,8 +11,8 @@ session_start();
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="./styles/main.css">
-    <link rel="stylesheet" href="./styles/auth.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/auth.css">
 </head>
 <style>
     /* Bottle Liquid Animation */
@@ -248,7 +248,7 @@ session_start();
 
         <!-- Right Side - Registration Form -->
         <div class="form-side">
-            <form id="registrationForm" action="./shopkeeper/server/Process.php" method="POST" class="compact-form">
+            <form id="registrationForm" action="../shopkeeper/server/Process.php" method="POST" class="compact-form">
                 <h2 class="form-title">Vendor Registration</h2>
                 <p class="form-subtitle">Fill your details to get started</p>
 
@@ -273,7 +273,8 @@ session_start();
                     <div class="form-group mobile">
                         <div class="input-with-icon">
                             <i class="fas fa-mobile-alt"></i>
-                            <input type="tel" id="mobile" name="mobile" required placeholder="Mobile Number">
+                            <input type="tel" id="mobile" pattern="^\[6-9]\d{9}$"
+                                title="Enter a valid Indian phone number with country code, e.g. 9876543210" name="mobile" required placeholder="Mobile Number">
                         </div>
                         <span style="color: #ff0000ca; margin-bottom: 0.5rem; font-size: 0.9rem;">
                             <?php echo isset($_SESSION['registration_error_phoneNumber']) ?  $_SESSION['registration_error_phoneNumber'] : null;

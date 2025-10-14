@@ -295,7 +295,7 @@
 
   <div class="success-container animate__animated animate__fadeIn">
     <div class="success-header">
-      <img src="../Asserts/Prime-Logo.png" alt="">
+      <img src="../../Asserts/Prime-Logo.png" alt="">
     </div>
 
     <div class="success-content">
@@ -320,7 +320,7 @@
         <a href="./dashboard.php" class="btn btn-primary">
           <i class="fas fa-tachometer-alt"></i> Go to Dashboard
         </a>
-        <a href="../" class="btn btn-outline">
+        <a href="../../" class="btn btn-outline">
           <i class="fas fa-user-edit"></i> Home Page
         </a>
       </div>

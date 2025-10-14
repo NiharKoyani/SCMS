@@ -1,9 +1,13 @@
 <?php
 session_start();
 
-if (isset($_SESSION['shopkeeper_id'])) {
-    include('./shopkeeper/dashboard.php');
+
+if (isset($_GET['login'])) {
+    header('Location: ./auth/login.php');
+} elseif (isset($_GET['registration'])) {
+    header('Location: ./auth/registration.php');
+} elseif (isset($_GET['forgot-password'])) {
+    header('Location: ./auth/forgot-password.php');
 } else {
-    header('location: ./home.php');
+    include 'home.php';
 }
-?>

@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
+
 $id = $_POST['productId'];
 $shopkeeper_id = $_POST['shopkeeper_id'];
 $quantity = $_POST['quantity'];

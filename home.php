@@ -30,7 +30,7 @@
             <nav>
                 <ul>
                     <li><a href="#">Contact</a></li>
-                    <li><a href="./login.php">Login</a></li>
+                    <li><a href="index.php?login">Login</a></li>
                 </ul>
             </nav>
         </header>
@@ -47,7 +47,7 @@
                 <h1>HYDRATION ELEVATED</h1>
                 <p>PRIME is a revolutionary hydration drink packed with electrolytes, BCAAs, and vitamins to help you refresh, replenish, and refuel.</p>
                 <div class="cta-buttons">
-                    <a href="./registration.php" class="btn btn-primary">
+                    <a href="index.php?registration" class="btn btn-primary">
                         <i class="fas fa-user-plus"></i> Join Now
                     </a>
                     <a href="#" class="btn btn-secondary">

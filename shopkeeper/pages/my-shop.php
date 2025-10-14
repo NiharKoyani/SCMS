@@ -9,10 +9,29 @@ $currentUser = $_SESSION['shopkeeper_id'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Shop - Vendor Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../styles/top-nav.css">
     <style>
+        /* ---------- CSS Variables ---------- */
         :root {
-            --primary-color: #4f46e5;
+            /* Original palette */
+            --primary: #09122c;
+            --primary-light: #ff8e8e;
+            --primary-dark: #596792;
+            --secondary: #11204be0;
+            --accent: #ffa502;
+            --dark: #2f3542;
+            --light: #f3f4f6;
+            --white: #ffffff;
+            --success: #2ed573;
+            --warning: #ffa502;
+            --danger: #ff4757;
+            --sidebar-width: 280px;
+
+            /* Extra palette */
+            --primary-color: #000000ff;
             --secondary-color: #f9fafb;
             --accent-color: #10b981;
             --text-color: #1f2937;
@@ -20,6 +39,7 @@ $currentUser = $_SESSION['shopkeeper_id'];
             --border-color: #e5e7eb;
         }
 
+        /* ---------- Reset ---------- */
         * {
             margin: 0;
             padding: 0;
@@ -27,110 +47,50 @@ $currentUser = $_SESSION['shopkeeper_id'];
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #f3f4f6;
-            color: var(--text-color);
-            line-height: 1.6;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .container {
+        /* ---------- Dashboard Layout ---------- */
+        .dashboard {
             display: flex;
             min-height: 100vh;
+            transition: all 0.3s ease;
         }
 
-        /* Sidebar styling */
-        .sidebar {
-            width: 260px;
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-        }
-
-        .sidebar h2 {
-            color: var(--primary-color);
-            margin-bottom: 30px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 1.5rem;
-        }
-
-        .sidebar ul {
-            list-style: none;
-        }
-
-        .sidebar li {
-            margin-bottom: 8px;
-        }
-
-        .sidebar a {
-            text-decoration: none;
-            color: var(--text-color);
-            display: flex;
-            align-items: center;
-            padding: 10px 12px;
-            border-radius: 6px;
-            transition: all 0.2s;
-            font-weight: 500;
-        }
-
-        .sidebar a:hover,
-        .sidebar a.active {
-            background-color: var(--secondary-color);
-            color: var(--primary-color);
-        }
-
-        .sidebar a i {
-            margin-right: 12px;
-            width: 20px;
-            text-align: center;
-        }
-
-        /* Main content area */
         .main-content {
             flex: 1;
-            padding: 30px;
-            margin-left: 260px;
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+            transition: all 0.3s ease;
         }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            color: var(--text-color);
-            margin: 0;
-            font-size: 1.8rem;
-        }
-
-        /* Profile Card */
-        .profile-card {
+        /* ---------- Shop Profile Card ---------- */
+        .shop-profile-card {
             background-color: white;
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             overflow: hidden;
-            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
         }
 
-        .profile-header {
+        .shop-profile-header {
             background: linear-gradient(135deg, var(--primary-color), #6366f1);
             color: white;
-            padding: 30px;
+            padding: 2rem;
             text-align: center;
             position: relative;
         }
 
-        .profile-avatar {
+        .shop-avatar {
             width: 120px;
             height: 120px;
             border-radius: 50%;
             background-color: white;
-            margin: 0 auto 15px;
+            margin: 0 auto 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -140,13 +100,13 @@ $currentUser = $_SESSION['shopkeeper_id'];
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .profile-name {
+        .shop-name {
             font-size: 24px;
             font-weight: 600;
-            margin-bottom: 5px;
+            margin-bottom: 0.5rem;
         }
 
-        .profile-role {
+        .shop-role {
             opacity: 0.9;
             font-size: 16px;
         }
@@ -166,15 +126,17 @@ $currentUser = $_SESSION['shopkeeper_id'];
             gap: 8px;
             backdrop-filter: blur(10px);
             transition: all 0.3s;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
         }
 
         .edit-profile-btn:hover {
             background-color: rgba(255, 255, 255, 0.3);
         }
 
-        /* Profile Details */
-        .profile-details {
-            padding: 30px;
+        /* ---------- Shop Details Grid ---------- */
+        .shop-details {
+            padding: 2rem;
         }
 
         .section-title {
@@ -195,14 +157,16 @@ $currentUser = $_SESSION['shopkeeper_id'];
         }
 
         .detail-item {
-            display: flex;
-            flex-direction: column;
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
         .detail-label {
             font-size: 14px;
             color: var(--light-text);
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -210,84 +174,21 @@ $currentUser = $_SESSION['shopkeeper_id'];
 
         .detail-value {
             font-weight: 500;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border-color);
+            font-size: 16px;
         }
 
         .edit-icon {
             color: var(--light-text);
             cursor: pointer;
             margin-left: auto;
+            transition: color 0.3s;
         }
 
         .edit-icon:hover {
             color: var(--primary-color);
         }
 
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-        }
-
-        .form-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        .btn {
-            padding: 12px 25px;
-            border-radius: 6px;
-            font-weight: 500;
-            cursor: pointer;
-            border: none;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #4338ca;
-        }
-
-        .btn-secondary {
-            background-color: var(--secondary-color);
-            color: var(--text-color);
-            border: 1px solid var(--border-color);
-        }
-
-        .btn-secondary:hover {
-            background-color: #e5e7eb;
-        }
-
-        /* Modal */
+        /* ---------- Modal ---------- */
         .modal {
             display: none;
             position: fixed;
@@ -335,45 +236,72 @@ $currentUser = $_SESSION['shopkeeper_id'];
             padding: 20px;
         }
 
-        /* Responsive styles */
-        @media (max-width: 900px) {
-            .sidebar {
-                width: 80px;
-                padding: 15px 10px;
-            }
-
-            .sidebar h2,
-            .sidebar a span {
-                display: none;
-            }
-
-            .sidebar a i {
-                margin-right: 0;
-                font-size: 1.2rem;
-            }
-
-            .main-content {
-                margin-left: 80px;
-            }
-
-            .details-grid {
-                grid-template-columns: 1fr;
-            }
+        /* ---------- Form Styles ---------- */
+        .form-group {
+            margin-bottom: 20px;
         }
 
-        @media (max-width: 768px) {
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
-
-            .form-actions {
-                flex-direction: column;
-            }
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
         }
 
-        /* Toast notification */
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #4338ca;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #e5e7eb;
+        }
+
+        /* ---------- Toast Notification ---------- */
         .toast {
             position: fixed;
             bottom: 20px;
@@ -396,8 +324,36 @@ $currentUser = $_SESSION['shopkeeper_id'];
             transform: translateY(0);
             opacity: 1;
         }
+
+        /* ---------- Responsive Styles ---------- */
+        @media (max-width: 900px) {
+            .main-content {
+                margin-left: 80px;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .shop-profile-header {
+                padding: 1.5rem;
+            }
+
+            .shop-avatar {
+                width: 80px;
+                height: 80px;
+                font-size: 30px;
+            }
+        }
     </style>
 </head>
+
 <?php
 require_once('../../Utility/db.php');
 $stmt = $conn->prepare("SELECT * FROM shopkeeper WHERE id = ?");
@@ -406,43 +362,62 @@ $stmt->execute();
 $result = $stmt->get_result();
 $shopkeeper = $result->fetch_assoc();
 $stmt->close();
+
+// Get cart count for the top navigation
+$sql = "SELECT * FROM cart_items WHERE shopkeeper_id='$currentUser'";
+$result = $conn->query($sql);
+$total_item_in_cart = 0;
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $total_item_in_cart += $row['quantity'];
+    }
+}
+$_SESSION['total-item-in-cart'] = $total_item_in_cart;
+$conn->close();
 ?>
 
 <body>
-    <div class="container">
+    <div class="dashboard">
         <!-- Sidebar -->
-        <div class="sidebar">
-            <h2>Vendor Dashboard</h2>
-            <ul>
-                <li><a href="#"><i class="fas fa-home"></i> <span>Dashboard</span></a></li>
-                <li><a href="#"><i class="fas fa-box"></i> <span>Products</span></a></li>
-                <li><a href="#"><i class="fas fa-shopping-cart"></i> <span>Orders</span></a></li>
-                <li><a href="#"><i class="fas fa-chart-line"></i> <span>Analytics</span></a></li>
-                <li><a href="#" class="active"><i class="fas fa-store"></i> <span>My Shop</span></a></li>
-                <li><a href="#"><i class="fas fa-users"></i> <span>Customers</span></a></li>
-                <li><a href="#"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
-            </ul>
-        </div>
+        <?php include('../util/sidebar.php'); ?>
 
         <!-- Main content -->
-        <div class="main-content">
-            <div class="header">
-                <h1>My Shop Profile</h1>
-            </div>
+        <main class="main-content">
+            <!-- Top Navigation -->
+            <nav class="top-nav">
+                <div class="nav-left">
+                    <button class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">Vendor Dashboard</h1>
+                </div>
+                <div class="nav-right">
+                    <button class="notification-btn">
+                        <a style="text-decoration: none; color:black; " href="./cart.php">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            <span class="notification-badge"><?php echo $total_item_in_cart; ?></span>
+                        </a>
+                    </button>
+                    <button class="profile-btn">
+                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Profile" class="profile-img">
+                    </button>
+                </div>
+            </nav>
 
-            <!-- Profile Card -->
-            <div class="profile-card">
-                <div class="profile-header">
-                    <div class="profile-avatar">
+            <!-- Shop Profile Card -->
+            <div class="shop-profile-card">
+                <div class="shop-profile-header">
+                    <div class="shop-avatar">
                         <i class="fas fa-store"></i>
                     </div>
-                    <h2 class="profile-name" id="shopNameDisplay"><?php echo $shopkeeper['shop_name'] ?></h2>
+                    <h2 class="shop-name" id="shopNameDisplay"><?php echo $shopkeeper['shop_name'] ?></h2>
+                    <p class="shop-role">Shop Owner</p>
                     <button class="edit-profile-btn" id="editProfileBtn">
                         <i class="fas fa-edit"></i> Edit Profile
                     </button>
                 </div>
 
-                <div class="profile-details">
+                <div class="shop-details">
                     <!-- Shop Information Section -->
                     <div class="section-title">
                         <i class="fas fa-info-circle"></i> Shop Information
@@ -483,14 +458,6 @@ $stmt->close();
 
                         <div class="detail-item">
                             <div class="detail-label">
-                                <i class="fas fa-lock"></i> Password
-                                <i class="fas fa-edit edit-icon" data-field="password"></i>
-                            </div>
-                            <div class="detail-value" id="passwordValue">••••••••</div>
-                        </div>
-
-                        <div class="detail-item">
-                            <div class="detail-label">
                                 <i class="fas fa-map-marker-alt"></i> Shop Location
                                 <i class="fas fa-edit edit-icon" data-field="shopLocation"></i>
                             </div>
@@ -499,7 +466,7 @@ $stmt->close();
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
 
     <!-- Edit Modal -->
@@ -510,37 +477,33 @@ $stmt->close();
                 <button class="close-modal" id="closeModal">&times;</button>
             </div>
             <div class="modal-body">
-                <form id="editForm" action="../server/update-my-shop.php" method="post">
+                <form id="editForm" action="../server/update-my-shop.php" method='post'>
                     <div style="display: flex; gap: 20px; justify-content: center">
                         <div class="form-group">
                             <label class="form-label" for="editShopName">Shop Name</label>
-                            <input type="text" class="form-input" id="editShopName" placeholder="Enter shop name">
+                            <input type="text" class="form-input" id="editShopName" name="shop_name" placeholder="Enter shop name">
                         </div>
 
                         <div class="form-group">
                             <label class="form-label" for="editOwnerName">Owner Name</label>
-                            <input type="text" class="form-input" id="editOwnerName" placeholder="Enter owner name">
+                            <input type="text" class="form-input" id="editOwnerName" name="owner_name" placeholder="Enter owner name">
                         </div>
                     </div>
                     <div style="display: flex; gap: 20px; justify-content: center">
                         <div class="form-group">
                             <label class="form-label" for="editMobileNumber">Mobile Number</label>
-                            <input type="tel" class="form-input" id="editMobileNumber" placeholder="Enter mobile number">
+                            <input type="tel" class="form-input" id="editMobileNumber" name="mobile_number" placeholder="Enter mobile number">
                         </div>
 
                         <div class="form-group">
                             <label class="form-label" for="editEmail">Email Address</label>
-                            <input type="email" class="form-input" id="editEmail" placeholder="Enter email address">
+                            <input type="email" class="form-input" id="editEmail" name="email" placeholder="Enter email address">
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="editPassword">Password</label>
-                        <input type="password" class="form-input" id="editPassword" placeholder="Enter new password">
                     </div>
 
                     <div class="form-group">
                         <label class="form-label" for="editShopLocation">Shop Location</label>
-                        <textarea class="form-input" id="editShopLocation" placeholder="Enter shop location" rows="3"></textarea>
+                        <textarea class="form-input" id="editShopLocation" name="shop_location" placeholder="Enter shop location" rows="3"></textarea>
                     </div>
 
                     <div class="form-actions">
@@ -578,9 +541,8 @@ $stmt->close();
             let shopData = {
                 shopName: '<?php echo $shopkeeper['shop_name'] ?>',
                 ownerName: '<?php echo $shopkeeper['owner_name'] ?>',
-                mobileNumber: '+91 <?php echo $shopkeeper['mobile_number'] ?>',
+                mobileNumber: '<?php echo $shopkeeper['mobile_number'] ?>',
                 email: '<?php echo $shopkeeper['email'] ?>',
-                password: '••••••••',
                 shopLocation: '<?php echo $shopkeeper['shop_location'] ?>'
             };
 
@@ -614,62 +576,6 @@ $stmt->close();
                 }
             });
 
-            // Handle form submission
-            editForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                // Update shop data
-                shopData.shopName = document.getElementById('editShopName').value || shopData.shopName;
-                shopData.ownerName = document.getElementById('editOwnerName').value || shopData.ownerName;
-                shopData.mobileNumber = document.getElementById('editMobileNumber').value || shopData.mobileNumber;
-                shopData.email = document.getElementById('editEmail').value || shopData.email;
-
-                // Only update password if it was changed
-                const newPassword = document.getElementById('editPassword').value;
-                if (newPassword) {
-                    shopData.password = '••••••••'; // In a real app, this would be the encrypted password
-                }
-
-                shopData.shopLocation = document.getElementById('editShopLocation').value || shopData.shopLocation;
-
-                // Update UI
-                updateShopDisplay();
-
-                // Close modal
-                editModal.style.display = 'none';
-
-                // Show success message
-                showToast('Shop information updated successfully!');
-
-                const formData = new FormData();
-                formData.append('shop_name', shopData.shopName);
-                formData.append('owner_name', shopData.ownerName);
-                formData.append('mobile_number', shopData.mobileNumber.replace(/^\+91\s*/, ''));
-                formData.append('email', shopData.email);
-                formData.append('shop_location', shopData.shopLocation);
-                // Only send password if changed
-                const passwordInput = document.getElementById('editPassword').value;
-                if (passwordInput) {
-                    formData.append('password', passwordInput);
-                }
-
-                fetch('../server/update-my-shop.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        showToast('Shop information updated successfully!');
-                    } else {
-                        showToast('Failed to update shop information.');
-                    }
-                })
-                .catch(() => {
-                    showToast('Error updating shop information.');
-                });
-            });
-
             // Function to open edit modal
             function openEditModal(field) {
                 // Reset form
@@ -685,7 +591,6 @@ $stmt->close();
                         ownerName: 'Owner Name',
                         mobileNumber: 'Mobile Number',
                         email: 'Email Address',
-                        password: 'Password',
                         shopLocation: 'Shop Location'
                     };
                     modalTitle.textContent = `Edit ${fieldNames[field]}`;
@@ -700,17 +605,6 @@ $stmt->close();
 
                 // Show modal
                 editModal.style.display = 'flex';
-            }
-
-            // Function to update shop display
-            function updateShopDisplay() {
-                document.getElementById('shopNameDisplay').textContent = shopData.shopName;
-                document.getElementById('shopNameValue').textContent = shopData.shopName;
-                document.getElementById('ownerNameValue').textContent = shopData.ownerName;
-                document.getElementById('mobileNumberValue').textContent = shopData.mobileNumber;
-                document.getElementById('emailValue').textContent = shopData.email;
-                document.getElementById('passwordValue').textContent = shopData.password;
-                document.getElementById('shopLocationValue').textContent = shopData.shopLocation;
             }
 
             // Function to show toast notification

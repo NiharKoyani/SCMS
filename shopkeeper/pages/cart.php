@@ -438,7 +438,6 @@ $roundsUp = round($total - $totalFloting, 2);
             const plusBtn = card.querySelector('.quantity-btn:last-child');
             const input = card.querySelector('.quantity-input');
             const price = card.querySelector('#price');
-            console.log(price);
 
             const max = parseInt(input.getAttribute('max')) || 51;
             const min = parseInt(input.getAttribute('min')) || 6;

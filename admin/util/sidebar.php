@@ -140,22 +140,22 @@
                     <span>Dashboard</span>
                 </a>
             </li>
+            <li class="menu-item <?php echo basename($_SERVER['PHP_SELF']) === 'orders.php' ? 'active' : null ?>">
+                <a href="./orders.php" class="menu-link">
+                    <i class="fas fa-box-open"></i>
+                    <span>Order's</span>
+                </a>
+            </li>
             <li class="menu-item <?php echo basename($_SERVER['PHP_SELF']) === 'products.php' ? 'active' : null ?>">
                 <a href="./products.php" class="menu-link">
                     <i class="fas fa-box-open"></i>
-                    <span>Products</span>
+                    <span>product's</span>
                 </a>
             </li>
-            <li class="menu-item <?php echo basename($_SERVER['PHP_SELF']) === 'recent-orders.php' ? 'active' : null ?>">
-                <a href="./recent-orders.php" class="menu-link">
-                    <i class="fas fa-shopping-bag"></i>
-                    <span>Recent Orders</span>
-                </a>
-            </li>
-            <li class="menu-item <?php echo basename($_SERVER['PHP_SELF']) === 'my-shop.php' ? 'active' : null ?>">
-                <a href="./my-shop.php" class="menu-link">
+            <li class="menu-item <?php echo basename($_SERVER['PHP_SELF']) === 'shopkeepers.php' ? 'active' : null ?>">
+                <a href="./shopkeepers.php" class="menu-link">
                     <i class="fas fa-store"></i>
-                    <span>My Shop</span>
+                    <span>Shopkeeper's</span>
                 </a>
             </li>
             <li class="menu-item">

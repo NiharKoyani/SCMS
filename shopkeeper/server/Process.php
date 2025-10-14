@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($existingMobile === $mobile) {
                 $_SESSION['registration_error_phoneNumber'] = "This mobile number is already registered.";
             }
-            header("Location: ../registration.php");
+            header("Location: ../pages/registration.php");
             exit();
         }
         $checkStmt->close();
@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Execute the statement
         if ($stmt->execute()) {
             // Registration successful - redirect to success page
-            header("Location: ../pages/registration_sucess.php");
+            header("Location: ../pages/registration-sucess.php");
             exit();
         } else {
             echo "Error: " . $stmt->error;
@@ -84,19 +84,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Prepare statement to fetch user
-        $stmt = $conn->prepare("SELECT id, password FROM shopkeeper WHERE email = ?");
+        $stmt = $conn->prepare("SELECT id, password, role FROM shopkeeper WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $stmt->store_result();
 
         if ($stmt->num_rows == 1) {
-            $stmt->bind_result($userId, $hashedPassword);
+            $stmt->bind_result($userId, $hashedPassword, $role);
             $stmt->fetch();
 
             if (password_verify($password, $hashedPassword)) {
                 // Login successful
-                $_SESSION['shopkeeper_id'] = $userId;
-                header("Location: ../pages/dashboard.php?dashboard");
+                if ($role === 'admin') {
+                    $_SESSION['admin_id'] = $userId;
+                    header("Location: ../../admin/pages/");
+                } else {
+                    $_SESSION['shopkeeper_id'] = $userId;
+                    header("Location: ../pages/dashboard.php?dashboard");
+                }
                 exit();
             } else {
                 $_SESSION['login_error'] = "Invalid password.";

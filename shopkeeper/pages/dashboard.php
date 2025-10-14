@@ -1,6 +1,15 @@
 <?php
 // include('./index.php');
+
+error_reporting(E_ALL);        // Report all errors
+ini_set("display_errors", 1);
+
 session_start();
+if (!isset($_SESSION['shopkeeper_id'])) {
+  // Redirect to login page or show an error message
+  header('Location: ../login.php');
+  exit();
+}
 $shopkeeperId = $_SESSION['shopkeeper_id'];
 
 ?>
@@ -454,27 +463,34 @@ $shopkeeperId = $_SESSION['shopkeeper_id'];
     vertical-align: middle;
   }
 
+  /* order status */
+
   .order-status {
     display: inline-block;
-    padding: 0.3rem 0.8rem;
+    padding: 6px 12px;
     border-radius: 20px;
-    font-size: 0.8rem;
+    font-size: 12px;
     font-weight: 500;
   }
 
-  .status-pending {
-    background: rgba(255, 165, 2, 0.1);
-    color: var(--warning);
+  .status-delivered {
+    background-color: #dcfce7;
+    color: #166534;
   }
 
-  .status-completed {
-    background: rgba(46, 213, 115, 0.1);
-    color: var(--success);
+  .status-pending {
+    background-color: #fef3c7;
+    color: #92400e;
+  }
+
+  .status-processing {
+    background-color: #dbeafe;
+    color: #1e40af;
   }
 
   .status-cancelled {
-    background: rgba(255, 71, 87, 0.1);
-    color: var(--danger);
+    background-color: #fee2e2;
+    color: #991b1b;
   }
 
   /* =========================
@@ -634,7 +650,7 @@ $shopkeeperId = $_SESSION['shopkeeper_id'];
 <?php
 include('../../Utility/db.php');
 $ordersId = [];
-$sql = "SELECT DISTINCT orderId FROM orders WHERE shopkeeper_id = ? ORDER BY created_at DESC";
+$sql = "SELECT DISTINCT orderId FROM orders WHERE shopkeeper_id = ? ORDER BY created_at DESC LIMIT 5";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $shopkeeperId);
 $stmt->execute();
@@ -643,7 +659,32 @@ $result = $stmt->get_result();
 while ($row = $result->fetch_assoc()) {
   $ordersId[] = $row['orderId'];
 }
+
+$totalDue = 0;
+foreach ($ordersId as $eachOrdersId) {
+  $dueSql = "SELECT total as total_due FROM orders WHERE shopkeeper_id = ? AND orderId = ? AND status = 'processing' LIMIT 1";
+  $dueStmt = $conn->prepare($dueSql);
+  $dueStmt->bind_param("is", $shopkeeperId, $eachOrdersId);
+  $dueStmt->execute();
+  $dueStmt->bind_result($total_due);
+  if ($dueStmt->fetch() && $total_due !== null) {
+    $totalDue += $total_due;
+  }
+  $dueStmt->close();
+}
+$totalProducts = 0;
+
+$productSql = "SELECT COUNT(*) as product_count FROM products";
+$productStmt = $conn->prepare($productSql);
+$productStmt->execute();
+$productStmt->bind_result($product_count);
+if ($productStmt->fetch()) {
+  $totalProducts = $product_count;
+}
+$productStmt->close();
+
 $stmt->close();
+
 
 $totalOrder = sizeof($ordersId);
 ?>
@@ -682,12 +723,12 @@ $totalOrder = sizeof($ordersId);
       <div class="dashboard-grid">
         <div class="widget">
           <div class="widget-header">
-            <h3 class="widget-title">Total Revenue</h3>
+            <h3 class="widget-title">Total Due Amount</h3>
             <div class="widget-icon">
               <i class="fas">₹</i>
             </div>
           </div>
-          <div class="widget-value">₹ 1,28,450</div>
+          <div class="widget-value">₹ <?php echo number_format($totalDue) ?></div>
           <div class="widget-change change-up">
             <!-- <i class="fas fa-arrow-up"></i>
             <span>12.5% from last month</span> -->
@@ -715,46 +756,13 @@ $totalOrder = sizeof($ordersId);
               <i class="fas fa-box-open"></i>
             </div>
           </div>
-          <div class="widget-value">42</div>
+          <div class="widget-value"><?php echo $totalProducts ?></div>
           <div class="widget-change change-down">
-            <i class="fas fa-arrow-down"></i>
-            <span>2 items out of stock</span>
-          </div>
-        </div>
-
-        <div class="widget">
-          <div class="widget-header">
-            <h3 class="widget-title">Customers</h3>
-            <div class="widget-icon">
-              <i class="fas fa-users"></i>
-            </div>
-          </div>
-          <div class="widget-value">1,248</div>
-          <div class="widget-change change-up">
-            <i class="fas fa-arrow-up"></i>
-            <span>56 new this week</span>
+            <!-- <i class="fas fa-arrow-down"></i>
+            <span>2 items out of stock</span> -->
           </div>
         </div>
       </div>
-
-      <!-- Sales Chart -->
-      <!-- <div class="sales-chart">
-        <div class="chart-header">
-          <h2 class="chart-title">Sales Overview</h2>
-          <div class="chart-period">
-            <button class="period-btn">Day</button>
-            <button class="period-btn active">Week</button>
-            <button class="period-btn">Month</button>
-            <button class="period-btn">Year</button>
-          </div>
-        </div>
-        <div class="chart-container"> -->
-      <!-- Chart will be rendered here -->
-      <!-- <div style="width: 100%; height: 100%; background-color: #f8f9fa; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-            <p style="color: #666;">Sales chart visualization</p>
-          </div>
-        </div>
-      </div> -->
 
       <!-- Recent Orders -->
       <div class="recent-orders">
@@ -766,48 +774,65 @@ $totalOrder = sizeof($ordersId);
           <thead>
             <tr>
               <th>Order ID</th>
-              <th>Customer</th>
               <th>Date</th>
               <th>Amount</th>
               <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>#BL-1042</td>
-              <td>Sarah Johnson</td>
-              <td>Today, 10:45 AM</td>
-              <td>₹ 84.50</td>
-              <td><span class="order-status status-completed">Completed</span></td>
-            </tr>
-            <tr>
-              <td>#BL-1041</td>
-              <td>Michael Chen</td>
-              <td>Today, 09:30 AM</td>
-              <td>₹ 126.75</td>
-              <td><span class="order-status status-pending">Pending</span></td>
-            </tr>
-            <tr>
-              <td>#BL-1040</td>
-              <td>Emily Rodriguez</td>
-              <td>Yesterday, 4:15 PM</td>
-              <td>₹ 58.90</td>
-              <td><span class="order-status status-completed">Completed</span></td>
-            </tr>
-            <tr>
-              <td>#BL-1039</td>
-              <td>David Kim</td>
-              <td>Yesterday, 2:30 PM</td>
-              <td>₹ 215.40</td>
-              <td><span class="order-status status-cancelled">Cancelled</span></td>
-            </tr>
-            <tr>
-              <td>#BL-1038</td>
-              <td>Jessica Williams</td>
-              <td>Yesterday, 11:20 AM</td>
-              <td>₹ 72.30</td>
-              <td><span class="order-status status-completed">Completed</span></td>
-            </tr>
+            <?php foreach ($ordersId as $orderId):
+              // Fetch products for this order
+              $products = [];
+              $productSql = "SELECT * FROM orders WHERE orderId = ? AND shopkeeper_id = ?";
+              $productStmt = $conn->prepare($productSql);
+              $productStmt->bind_param("si", $orderId, $shopkeeperId);
+              $productStmt->execute();
+              $productResult = $productStmt->get_result();
+              while ($productRow = $productResult->fetch_assoc()) {
+                $products[] = $productRow;
+              }
+              $productStmt->close();
+
+              $dateTime = $products[0]['created_at'];
+              $status = $products[0]['status'];
+              $totalAmount = $products[0]['total'];
+
+              // Format date and time
+              list($date, $time) = explode(' ', $dateTime);
+              $dateObj = DateTime::createFromFormat('Y-m-d', $date);
+              $formattedDate = $dateObj ? $dateObj->format('d-m-Y') : $date;
+
+              // Determine status class
+              $statusClass = '';
+              switch ($status) {
+                case 'delivered':
+                  $statusClass = 'status-delivered';
+                  break;
+                case 'processing':
+                  $statusClass = 'status-processing';
+                  break;
+                case 'pending':
+                  $statusClass = 'status-pending';
+                  break;
+                case 'cancelled':
+                  $statusClass = 'status-cancelled';
+                  break;
+                default:
+                  $statusClass = 'status-pending';
+              }
+            ?>
+
+              <tr>
+                <td>#ORD-<?php echo $orderId; ?></td>
+                <td><?php echo $formattedDate; ?></td>
+                <td>₹ <?php echo number_format($totalAmount); ?></td>
+                <td><span class="order-status <?php echo $statusClass; ?>"><?php echo ucfirst($status); ?></span></td>
+
+              </tr>
+
+            <?php endforeach; ?>
+
+
           </tbody>
         </table>
       </div>

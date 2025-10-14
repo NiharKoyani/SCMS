@@ -415,7 +415,12 @@ $stmt->close();
 
                         // Format date and time
                         list($date, $time) = explode(' ', $dateTime);
-                        $dateObj = DateTime::createFromFormat('Y-m-d', $date);
+                        // $dateObj = DateTime::createFromFormat('Y-m-d', $date);
+                        // Format time to 12-hour format with AM/PM
+                        $timeObj = DateTime::createFromFormat('H:i:s', $time);
+                        if ($timeObj) {
+                            $time = $timeObj->format('h:i A');
+                        }
                         $formattedDate = $dateObj ? $dateObj->format('d-m-Y') : $date;
 
                         // Determine status class
@@ -487,7 +492,7 @@ $stmt->close();
                                 <?php endforeach; ?>
                             </div>
                             <div class="order-footer">
-                                <div class="order-total">Total: ₹ <?php echo $totalAmount; ?></div>
+                                <div class="order-total">Total: ₹ <?php echo number_format($totalAmount); ?></div>
                                 <button class="reorder-btn" <?php echo $status === 'cancelled' ? 'disabled' : ''; ?>>
                                     <i class="fas fa-redo-alt"></i>
                                     Re-order

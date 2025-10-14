@@ -33,7 +33,7 @@ if ($stmt->num_rows > 0) {
 
     $stmt->close();
     $conn->close();
-    header('Location: ../cart.php');
+    header('Location: ../pages/cart.php');
     exit;
 }
 $stmt->close();

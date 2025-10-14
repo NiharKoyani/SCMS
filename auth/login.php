@@ -2,6 +2,7 @@
 <html lang="en">
 <?php
 session_start();
+
 ?>
 
 <head>
@@ -11,8 +12,8 @@ session_start();
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="./styles/main.css">
-    <link rel="stylesheet" href="./styles/auth.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/auth.css">
 </head>
 <style>
     /* Bottle Liquid Animation */
@@ -228,7 +229,7 @@ session_start();
 
         <!-- Right Side - Login Form -->
         <div class="form-side">
-            <form id="loginForm" action="./shopkeeper/server/Process.php" method="POST" class="compact-form">
+            <form id="loginForm" action="../shopkeeper/server/Process.php" method="POST" class="compact-form">
                 <h2 class="form-title">Vendor Login</h2>
                 <p class="form-subtitle">Sign in to your account</p>
 
@@ -260,7 +261,7 @@ session_start();
                         <label for="remember">Remember me</label>
                     </div>
                     <div class="forgot-password">
-                        <a href="">Forgot password?</a>
+                        <a href="./forgot-password.php">Forgot password?</a>
                     </div>
                 </div>
 
