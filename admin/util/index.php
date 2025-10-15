@@ -19,7 +19,7 @@ if (!$isLogin) {
 </head>
 
 <body>
-    <?php header('Location: ./dashboard.php') ?>
+    <?php header('Location: ../dashboard.php') ?>
 </body>
 
 </html>

@@ -277,8 +277,12 @@ session_start();
                                 title="Enter a valid Indian phone number with country code, e.g. 9876543210" name="mobile" required placeholder="Mobile Number">
                         </div>
                         <span style="color: #ff0000ca; margin-bottom: 0.5rem; font-size: 0.9rem;">
-                            <?php echo isset($_SESSION['registration_error_phoneNumber']) ?  $_SESSION['registration_error_phoneNumber'] : null;
-                            unset($_SESSION['registration_error_phoneNumber']) ?>
+                            <?php
+                            if (isset($_SESSION['registration_error_phoneNumber'])) {
+                                echo $_SESSION['registration_error_phoneNumber'];
+                                unset($_SESSION['registration_error_phoneNumber']);
+                            }
+                            ?>
                         </span>
                     </div>
 

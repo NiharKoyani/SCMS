@@ -344,14 +344,18 @@
                     </div>
 
                     <div class="action-buttons">
-                        <a href="mailto:gamebazaar.fun@gmail.com"><button class="btn btn-outline">
-                                <i class="fas fa-question-circle"></i>
-                                Contact Support
+                        <a href="../../"><button class="btn btn-primary">
+                                <i class="fas fa-upload"></i>
+                                Go To Home
                             </button></a>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-question-circle"></i>
+                            Contact Support
+                        </button>
                     </div>
 
                     <div class="contact-info">
-                        <p>Need immediate assistance? Contact our support team at <a href="mailto:gamebazaar.fun@gmail.com">support@vendormarket.com</a> or call <a href="tel:+18005551234">+1 (800) 555-1234</a></p>
+                        <p>Need immediate assistance? Contact our support team at <a href="mailto:support@vendormarket.com">support@vendormarket.com</a> or call <a href="tel:+18005551234">+1 (800) 555-1234</a></p>
                     </div>
                 </div>
             </div>
@@ -374,11 +378,6 @@
                     clearInterval(progressInterval);
                 }
             }, 3000);
-
-            // Handle button clicks
-            document.querySelector('.btn-primary').addEventListener('click', function() {
-                alert('Document upload feature would open here in a real application.');
-            });
 
             document.querySelector('.btn-outline').addEventListener('click', function() {
                 alert('Support contact form would open here in a real application.');

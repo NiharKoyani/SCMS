@@ -159,7 +159,7 @@
                 </a>
             </li>
             <li class="menu-item">
-                <a href="../server/logout.php" style="color: red;" class="menu-link">
+                <a href="../../Utility/logout.php" style="color: red;" class="menu-link">
                     <i class="fas fa-users"></i>
                     <span>Log Out</span>
                 </a>

@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($stmt->execute()) {
                 $successMessage = "Shopkeeper deleted successfully!";
-                header("Location: vendors.php?success=1");
+                header("Location: ./shopkeepers.php?success=1");
                 exit();
             } else {
                 $errorMessage = "Failed to delete shopkeeper: " . $conn->error;
@@ -550,6 +550,7 @@ $conn->close();
         }
 
         .delete-btn {
+            display: flex;
             background: rgba(255, 71, 87, 0.1);
             color: var(--danger);
         }
@@ -877,7 +878,8 @@ $conn->close();
                                             <div class="stat-label">Orders</div>
                                         </div>
                                         <div class="stat-item">
-                                            <div class="stat-value">₹<?php echo number_format($shopkeeper['total_sales'], 2); ?></div>
+                                            <div class="stat-value">₹<?php $tax = $shopkeeper['total_sales'] * 5 / 100;
+                                                                        echo number_format($shopkeeper['total_sales'] + $tax); ?></div>
                                             <div class="stat-label">Sales</div>
                                         </div>
                                     </div>
@@ -901,12 +903,12 @@ $conn->close();
 
                                     <div class="vendor-actions">
                                         <button class="action-btn view-btn" onclick="viewVendor(<?php echo $shopkeeper['id']; ?>)">
-                                            <i class="fas fa-eye"></i>
-                                            View
+                                            <!-- <i class="fas fa-eye"></i> -->
+                                            <!-- View -->
                                         </button>
                                         <button class="action-btn status-btn" onclick="showStatusForm(<?php echo $shopkeeper['id']; ?>)">
-                                            <i class="fas fa-cog"></i>
-                                            Status
+                                            <!-- <i class="fas fa-cog"></i>
+                                            Status -->
                                         </button>
                                         <form method="POST" style="display: inline;">
                                             <input type="hidden" name="shopkeeper_id" value="<?php echo $shopkeeper['id']; ?>">
@@ -997,6 +999,32 @@ $conn->close();
         function confirmDelete(shopName) {
             return confirm(`Are you sure you want to delete "${shopName}"? This will also remove all their products and orders.`);
         }
+
+        // Auto-hide success message after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const successAlert = document.querySelector('.alert-success');
+            if (successAlert) {
+                setTimeout(() => {
+                    successAlert.style.opacity = '0';
+                    successAlert.style.transition = 'opacity 0.5s ease';
+                    setTimeout(() => {
+                        successAlert.remove();
+                    }, 500);
+                }, 3000); // 3 seconds
+            }
+
+            // Also hide error messages after 5 seconds
+            const errorAlert = document.querySelector('.alert-error');
+            if (errorAlert) {
+                setTimeout(() => {
+                    errorAlert.style.opacity = '0';
+                    errorAlert.style.transition = 'opacity 0.5s ease';
+                    setTimeout(() => {
+                        errorAlert.remove();
+                    }, 500);
+                }, 5000); // 5 seconds for errors
+            }
+        });
     </script>
 </body>
 

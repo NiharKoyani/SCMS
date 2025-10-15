@@ -43,5 +43,5 @@ foreach ($result as $row) {
 $stmt->close();
 $conn->close();
 
-header("Location: ../pages/cart.php");
+header("Location: ../pages/recent-orders.php");
 exit();

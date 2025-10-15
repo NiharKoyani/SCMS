@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($existingMobile === $mobile) {
                 $_SESSION['registration_error_phoneNumber'] = "This mobile number is already registered.";
             }
-            header("Location: ../pages/registration.php");
+            header("Location: ../../auth/registration.php");
             exit();
         }
         $checkStmt->close();
@@ -84,13 +84,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Prepare statement to fetch user
-        $stmt = $conn->prepare("SELECT id, password, role FROM shopkeeper WHERE email = ?");
+        $stmt = $conn->prepare("SELECT id, password, role, status FROM shopkeeper WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $stmt->store_result();
 
         if ($stmt->num_rows == 1) {
-            $stmt->bind_result($userId, $hashedPassword, $role);
+            $stmt->bind_result($userId, $hashedPassword, $role, $status);
             $stmt->fetch();
 
             if (password_verify($password, $hashedPassword)) {
@@ -99,18 +99,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $_SESSION['admin_id'] = $userId;
                     header("Location: ../../admin/pages/");
                 } else {
-                    $_SESSION['shopkeeper_id'] = $userId;
-                    header("Location: ../pages/dashboard.php?dashboard");
+                    if ($status === 'active') {
+                        $_SESSION['shopkeeper_id'] = $userId;
+                        header("Location: ../pages/dashboard.php?dashboard");
+                    } else {
+                        header("Location: ../pages/account-review.php");
+                    }
                 }
                 exit();
             } else {
                 $_SESSION['login_error'] = "Invalid password.";
-                header("Location: ../../login.php");
+                header("Location: ../../auth/login.php");
                 exit();
             }
         } else {
             $_SESSION['login_error'] = "No user found with this email.";
-            header("Location: ../../login.php");
+            header("Location: ../../auth/login.php");
             exit();
         }
         $stmt->close();

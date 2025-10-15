@@ -10,7 +10,6 @@ include('../../Utility/db.php');
 
 // Get all products with vendor information
 $sql = "SELECT * FROM products";
-
 $result = $conn->query($sql);
 $products = [];
 if ($result && $result->num_rows > 0) {
@@ -22,36 +21,60 @@ if ($result && $result->num_rows > 0) {
 // Handle product actions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['delete_product'])) {
-        $productId = $_POST['product_id'];
-        $deleteSql = "DELETE FROM products WHERE id = ?";
-        $stmt = $conn->prepare($deleteSql);
-        $stmt->bind_param("i", $productId);
+        $productId = isset($_POST['product_id']) ? intval($_POST['product_id']) : 0;
 
-        if ($stmt->execute()) {
-            $successMessage = "Product deleted successfully!";
-            header("Location: products.php?success=1");
-            exit();
+        // Validate product ID
+        if ($productId > 0) {
+            // First, check if product exists
+            $checkSql = "SELECT id FROM products WHERE id = ?";
+            $checkStmt = $conn->prepare($checkSql);
+            $checkStmt->bind_param("i", $productId);
+            $checkStmt->execute();
+            $checkResult = $checkStmt->get_result();
+
+            if ($checkResult->num_rows > 0) {
+                // Product exists, proceed with deletion
+                $deleteSql = "DELETE FROM products WHERE id = ?";
+                $stmt = $conn->prepare($deleteSql);
+                $stmt->bind_param("i", $productId);
+
+                if ($stmt->execute()) {
+                    $successMessage = "Product deleted successfully!";
+                    header("Location: products.php?success=1");
+                    exit();
+                } else {
+                    $errorMessage = "Failed to delete product: " . $conn->error;
+                }
+                $stmt->close();
+            } else {
+                $errorMessage = "Product not found!";
+            }
+            $checkStmt->close();
         } else {
-            $errorMessage = "Failed to delete product: " . $conn->error;
+            $errorMessage = "Invalid product ID!";
         }
-        $stmt->close();
     }
 
     if (isset($_POST['update_stock'])) {
-        $productId = $_POST['product_id'];
-        $newStock = $_POST['stock'];
-        $updateSql = "UPDATE products SET stock = ? WHERE id = ?";
-        $stmt = $conn->prepare($updateSql);
-        $stmt->bind_param("ii", $newStock, $productId);
+        $productId = intval($_POST['product_id']);
+        $newStock = intval($_POST['stock']);
 
-        if ($stmt->execute()) {
-            $successMessage = "Stock updated successfully!";
-            header("Location: products.php?success=1");
-            exit();
+        if ($productId > 0 && $newStock >= 0) {
+            $updateSql = "UPDATE products SET stock = ? WHERE id = ?";
+            $stmt = $conn->prepare($updateSql);
+            $stmt->bind_param("ii", $newStock, $productId);
+
+            if ($stmt->execute()) {
+                $successMessage = "Stock updated successfully!";
+                header("Location: products.php?success=1");
+                exit();
+            } else {
+                $errorMessage = "Failed to update stock: " . $conn->error;
+            }
+            $stmt->close();
         } else {
-            $errorMessage = "Failed to update stock: " . $conn->error;
+            $errorMessage = "Invalid stock value or product ID!";
         }
-        $stmt->close();
     }
 }
 
@@ -920,11 +943,6 @@ $conn->close();
                                         </button>
                                         <form method="POST" style="display: inline;">
                                             <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                                            <button type="submit" name="delete_product" class="action-btn delete-btn"
-                                                onclick="return confirmDelete('<?php echo htmlspecialchars($product['name']); ?>')">
-                                                <i class="fas fa-trash"></i>
-                                                Delete
-                                            </button>
                                         </form>
                                     </div>
 
@@ -1024,6 +1042,32 @@ $conn->close();
         function confirmDelete(productName) {
             return confirm(`Are you sure you want to delete "${productName}"? This action cannot be undone.`);
         }
+
+        // Auto-hide success message after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const successAlert = document.querySelector('.alert-success');
+            if (successAlert) {
+                setTimeout(() => {
+                    successAlert.style.opacity = '0';
+                    successAlert.style.transition = 'opacity 0.5s ease';
+                    setTimeout(() => {
+                        successAlert.remove();
+                    }, 500);
+                }, 3000); // 3 seconds
+            }
+
+            // Also hide error messages after 5 seconds
+            const errorAlert = document.querySelector('.alert-error');
+            if (errorAlert) {
+                setTimeout(() => {
+                    errorAlert.style.opacity = '0';
+                    errorAlert.style.transition = 'opacity 0.5s ease';
+                    setTimeout(() => {
+                        errorAlert.remove();
+                    }, 500);
+                }, 5000); // 5 seconds for errors
+            }
+        });
     </script>
 </body>
 

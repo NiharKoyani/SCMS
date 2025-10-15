@@ -1,13 +1,3 @@
-<?php
-session_start();
-$isLogin = isset($_SESSION['admin_id']);
-
-if (!$isLogin) {
-    header('Location: ../../auth/login.php');
-    exit;
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,7 +9,7 @@ if (!$isLogin) {
 </head>
 
 <body>
-    <?php header('Location: ./dashboard.php') ?>
+    <?php header('Location: ./login.php') ?>
 </body>
 
 </html>

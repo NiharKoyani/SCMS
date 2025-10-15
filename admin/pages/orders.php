@@ -846,13 +846,13 @@ $conn->close();
                                                 <div class="product-subtotal">₹<?php echo number_format($product['subtotal'], 2); ?></div>
                                             </div>
                                         </div>
-                                        <?php endforeach; ?>
-                                        <div class="price-section">
-                                            Tax Amount: ₹<?php
-                                                            $subTotal = $order['total_amount'];
-                                                            $tax = round((($subTotal + 40) * 0.05), 2);
-                                                            echo number_format($tax); ?>
-                                        </div>
+                                    <?php endforeach; ?>
+                                    <div class="price-section">
+                                        Tax Amount: ₹<?php
+                                                        $subTotal = $order['total_amount'];
+                                                        $tax = round((($subTotal + 40) * 0.05), 2);
+                                                        echo number_format($tax); ?>
+                                    </div>
                                 </div>
 
                                 <!-- Order Total -->
@@ -916,6 +916,31 @@ $conn->close();
                     this.closest('form').submit();
                 });
             });
+        });
+        // Auto-hide success message after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const successAlert = document.querySelector('.alert-success');
+            if (successAlert) {
+                setTimeout(() => {
+                    successAlert.style.opacity = '0';
+                    successAlert.style.transition = 'opacity 0.5s ease';
+                    setTimeout(() => {
+                        successAlert.remove();
+                    }, 500);
+                }, 3000); // 3 seconds
+            }
+
+            // Also hide error messages after 5 seconds
+            const errorAlert = document.querySelector('.alert-error');
+            if (errorAlert) {
+                setTimeout(() => {
+                    errorAlert.style.opacity = '0';
+                    errorAlert.style.transition = 'opacity 0.5s ease';
+                    setTimeout(() => {
+                        errorAlert.remove();
+                    }, 500);
+                }, 5000); // 5 seconds for errors
+            }
         });
     </script>
 </body>

@@ -493,10 +493,10 @@ $stmt->close();
                             </div>
                             <div class="order-footer">
                                 <div class="order-total">Total: ₹ <?php echo number_format($totalAmount); ?></div>
-                                <button class="reorder-btn" <?php echo $status === 'cancelled' ? 'disabled' : ''; ?>>
+                                <!-- <button class="reorder-btn" <?php echo $status === 'cancelled' ? 'disabled' : ''; ?>>
                                     <i class="fas fa-redo-alt"></i>
                                     Re-order
-                                </button>
+                                </button> -->
                             </div>
                         </div>
                     <?php endforeach; ?>
