@@ -7,7 +7,7 @@ ini_set("display_errors", 1);
 session_start();
 if (!isset($_SESSION['shopkeeper_id'])) {
   // Redirect to login page or show an error message
-  header('Location: ../login.php');
+  header('Location: ../../auth/login.php');
   exit();
 }
 $shopkeeperId = $_SESSION['shopkeeper_id'];
@@ -768,7 +768,7 @@ $totalOrder = sizeof($ordersId);
       <div class="recent-orders">
         <div class="orders-header">
           <h2 class="orders-title">Recent Orders</h2>
-          <a href="#" class="view-all">View All</a>
+          <a href="./recent-orders.php" class="view-all">View All</a>
         </div>
         <table class="orders-table">
           <thead>

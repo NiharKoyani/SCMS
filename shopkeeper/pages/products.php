@@ -3,6 +3,12 @@
 <?php
 // include('./index.php');
 session_start();
+session_start();
+if (!isset($_SESSION['shopkeeper_id'])) {
+    // Redirect to login page or show an error message
+    header('Location: ../../auth/login.php');
+    exit();
+}
 $currentUser = $_SESSION['shopkeeper_id'];
 ?>
 

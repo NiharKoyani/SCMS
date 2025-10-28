@@ -1,1 +1,4 @@
-<?php include('../../Utility/403-forbidden.php') ?>
+<?php
+header('Location: ./dashboard.php');
+exit();
+?>

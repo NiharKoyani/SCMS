@@ -4,6 +4,13 @@ error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
 session_start();
+
+if (!isset($_SESSION['shopkeeper_id'])) {
+    // Redirect to login page or show an error message
+    header('Location: ../../auth/login.php');
+    exit();
+}
+
 // Database connection
 require_once('../../Utility/db.php');
 

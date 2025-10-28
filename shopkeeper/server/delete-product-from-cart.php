@@ -3,6 +3,11 @@ error_reporting(E_ALL);        // Report all errors
 ini_set("display_errors", 1);
 
 session_start();
+if (!isset($_SESSION['shopkeeper_id'])) {
+    // Redirect to login page or show an error message
+    header('Location: ../../auth/login.php');
+    exit();
+}
 $currentUser = $_SESSION['shopkeeper_id'];
 
 

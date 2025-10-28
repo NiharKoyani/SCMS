@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
+
 session_start();
+if (!isset($_SESSION['shopkeeper_id'])) {
+    // Redirect to login page or show an error message
+    header('Location: ../../auth/login.php');
+    exit();
+}
 $currentUser = $_SESSION['shopkeeper_id'];
 ?>
 

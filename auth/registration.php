@@ -292,8 +292,12 @@ session_start();
                             <input type="email" id="email" name="email" required placeholder="Email Address">
                         </div>
                         <span style="color: #ff0000ca; margin-bottom: 0.5rem; font-size: 0.9rem;">
-                            <?php echo isset($_SESSION['registration_error_email']) ?  $_SESSION['registration_error_email'] : null;
-                            unset($_SESSION['registration_error_email̃']) ?>
+                            <?php
+                            if (isset($_SESSION['registration_error'])) {
+                                echo $_SESSION['registration_error'];
+                                unset($_SESSION['registration_error']);
+                            }
+                            ?>
                         </span>
                     </div>
 

@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: ../login.php');
+    header('Location: ../../auth/login.php');
     exit();
 }
 $adminId = $_SESSION['admin_id'];
@@ -682,15 +682,15 @@ $conn->close();
             // Create background bubbles
             const bubblesBg = document.querySelector('.bubbles-bg');
             for (let i = 0; i < 15; i++) {
-            const bubble = document.createElement('div');
-            bubble.className = 'bubble';
-            bubble.style.width = Math.random() * 60 + 20 + 'px';
-            bubble.style.height = bubble.style.width;
-            bubble.style.left = Math.random() * 100 + '%';
-            bubble.style.animationDuration = 5 + Math.random() * 15 + 's';
-            bubble.style.animationDelay = Math.random() * 5 + 's';
-            bubble.style.setProperty('--move-x', Math.random() > 0.5 ? 1 : -1);
-            bubblesBg.appendChild(bubble);
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                bubble.style.width = Math.random() * 60 + 20 + 'px';
+                bubble.style.height = bubble.style.width;
+                bubble.style.left = Math.random() * 100 + '%';
+                bubble.style.animationDuration = 5 + Math.random() * 15 + 's';
+                bubble.style.animationDelay = Math.random() * 5 + 's';
+                bubble.style.setProperty('--move-x', Math.random() > 0.5 ? 1 : -1);
+                bubblesBg.appendChild(bubble);
             }
 
             // Toggle sidebar on mobile
@@ -698,22 +698,22 @@ $conn->close();
             const sidebar = document.querySelector('.sidebar');
 
             menuToggle.addEventListener('click', function() {
-            sidebar.classList.toggle('open');
+                sidebar.classList.toggle('open');
             });
 
             // Fix: Make increment/decrement work for all products (if you have multiple)
             // This is a generic example for buttons with class .increment and .decrement
             document.querySelectorAll('.increment').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                const input = btn.closest('.product-item').querySelector('.quantity-input');
-                if (input) input.value = parseInt(input.value) + 1;
-            });
+                btn.addEventListener('click', function() {
+                    const input = btn.closest('.product-item').querySelector('.quantity-input');
+                    if (input) input.value = parseInt(input.value) + 1;
+                });
             });
             document.querySelectorAll('.decrement').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                const input = btn.closest('.product-item').querySelector('.quantity-input');
-                if (input && parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
-            });
+                btn.addEventListener('click', function() {
+                    const input = btn.closest('.product-item').querySelector('.quantity-input');
+                    if (input && parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
+                });
             });
         });
     </script>

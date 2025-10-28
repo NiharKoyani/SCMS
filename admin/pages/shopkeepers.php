@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['admin_id'])) {
-    header('Location: ../login.php');
+    header('Location: ../../auth/login.php');
     exit();
 }
 $adminId = $_SESSION['admin_id'];
@@ -10,7 +10,7 @@ include('../../Utility/db.php');
 
 // Get all shopkeepers
 $shopkeepers = [];
-$sql = "SELECT * FROM shopkeeper ORDER BY created_at DESC";
+$sql = "SELECT * FROM shopkeeper WHERE role='shopkeeper' ORDER BY created_at DESC";
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
@@ -903,12 +903,12 @@ $conn->close();
 
                                     <div class="vendor-actions">
                                         <button class="action-btn view-btn" onclick="viewVendor(<?php echo $shopkeeper['id']; ?>)">
-                                            <!-- <i class="fas fa-eye"></i> -->
-                                            <!-- View -->
+                                            <i class="fas fa-eye"></i>
+                                            View
                                         </button>
                                         <button class="action-btn status-btn" onclick="showStatusForm(<?php echo $shopkeeper['id']; ?>)">
-                                            <!-- <i class="fas fa-cog"></i>
-                                            Status -->
+                                            <i class="fas fa-cog"></i>
+                                            Status
                                         </button>
                                         <form method="POST" style="display: inline;">
                                             <input type="hidden" name="shopkeeper_id" value="<?php echo $shopkeeper['id']; ?>">
@@ -993,7 +993,7 @@ $conn->close();
         }
 
         function viewVendor(vendorId) {
-            alert('View vendor details for vendor ID: ' + vendorId + '\n\nIn a real implementation, this would open a detailed vendor profile.');
+            alert('View vendor details for vendor ID: ' + vendorId);
         }
 
         function confirmDelete(shopName) {

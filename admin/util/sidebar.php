@@ -149,7 +149,7 @@
             <li class="menu-item <?php echo basename($_SERVER['PHP_SELF']) === 'products.php' ? 'active' : null ?>">
                 <a href="./products.php" class="menu-link">
                     <i class="fas fa-box-open"></i>
-                    <span>product's</span>
+                    <span>Product's</span>
                 </a>
             </li>
             <li class="menu-item <?php echo basename($_SERVER['PHP_SELF']) === 'shopkeepers.php' ? 'active' : null ?>">

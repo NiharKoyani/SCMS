@@ -2,6 +2,12 @@
 <html lang="en">
 <?php
 session_start();
+session_start();
+if (!isset($_SESSION['shopkeeper_id'])) {
+    // Redirect to login page or show an error message
+    header('Location: ../../auth/login.php');
+    exit();
+}
 $shopkeeperId = $_SESSION['shopkeeper_id'];
 ?>
 
@@ -415,7 +421,7 @@ $stmt->close();
 
                         // Format date and time
                         list($date, $time) = explode(' ', $dateTime);
-                        // $dateObj = DateTime::createFromFormat('Y-m-d', $date);
+                        $dateObj = DateTime::createFromFormat('Y-m-d', $date);
                         // Format time to 12-hour format with AM/PM
                         $timeObj = DateTime::createFromFormat('H:i:s', $time);
                         if ($timeObj) {

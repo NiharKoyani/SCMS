@@ -4,6 +4,13 @@ session_start();
 error_reporting(E_ALL);        // Report all errors
 ini_set("display_errors", 1);
 
+
+if (!isset($_SESSION['shopkeeper_id'])) {
+    // Redirect to login page or show an error message
+    header('Location: ../../auth/login.php');
+    exit();
+}
+
 $shopkeeperId = $_SESSION['shopkeeper_id'];
 $productId = $_POST['id'];
 $userQuantity = $_POST['quantity'];

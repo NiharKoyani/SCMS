@@ -309,16 +309,15 @@
       <div class="next-steps">
         <h3><i class="fas fa-clipboard-list"></i> What's Next?</h3>
         <ol>
-          <li>Check your email for a verification link (may be in your spam folder)</li>
-          <li>Complete your shop profile to get listed in our directory</li>
-          <li>Explore our vendor dashboard to manage your products</li>
-          <li>Join our community forum to connect with other vendors</li>
+          <li>Our team is reviewing your submitted business information</li>
+          <li>We're verifying your business registration and details after approval, you can easily login and place your orders</li>
+          <li>Final approval and account activation <span style="color: red;">pending</span></li>
         </ol>
       </div>
 
       <div class="action-buttons">
-        <a href="./dashboard.php" class="btn btn-primary">
-          <i class="fas fa-tachometer-alt"></i> Go to Dashboard
+        <a href="../../auth/login.php" class="btn btn-primary">
+          <i class="fas fa-tachometer-alt"></i> Go to Login
         </a>
         <a href="../../" class="btn btn-outline">
           <i class="fas fa-user-edit"></i> Home Page
